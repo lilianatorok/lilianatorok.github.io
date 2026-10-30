@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  // GitHub Pages only serves static files, and serves them from /<repo-name>.
+  output: "export",
+  basePath: process.env.BASE_PATH || undefined,
 };
 
 export default nextConfig;
