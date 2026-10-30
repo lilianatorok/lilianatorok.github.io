@@ -5,12 +5,134 @@ import { useEffect, useRef, useState } from "react";
 import { projects } from "@/lib/projects";
 
 const COPIES = [0, 1, 2];
+const TILE_COLUMNS = 8;
+const REVEAL_MS = 750;
+const TILE_FADE_MS = 200;
+const FOLLOW_MS = 180;
+
+const coverSrc = (cover: string) => `${cover}?scale-down-to=1024`;
+const covers = new Map<string, HTMLImageElement>();
+
+function coverImage(src: string) {
+  let image = covers.get(src);
+  if (!image) {
+    image = new Image();
+    image.src = src;
+    covers.set(src, image);
+  }
+  return image;
+}
+
+// Builds the picture out of square tiles that softly fade in, in random order. Their start times
+// follow an ease-in-out curve: a few tiles first, a rush in the middle, the last few trickling in.
+// Returns a function that stops the animation.
+function revealInTiles(canvas: HTMLCanvasElement, image: HTMLImageElement) {
+  const ctx = canvas.getContext("2d");
+  const ratio = window.devicePixelRatio || 1;
+  const width = Math.round(canvas.offsetWidth * ratio);
+  const height = Math.round(canvas.offsetHeight * ratio);
+  if (!ctx || !width || !height) return () => {};
+  canvas.width = width;
+  canvas.height = height;
+
+  // Crops the image to the canvas the way object-fit: cover would.
+  const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+  const offsetX = (image.naturalWidth - width / scale) / 2;
+  const offsetY = (image.naturalHeight - height / scale) / 2;
+
+  const size = Math.ceil(width / TILE_COLUMNS);
+  const tiles: { x: number; y: number; delay: number }[] = [];
+  for (let y = 0; y < height; y += size) {
+    for (let x = 0; x < width; x += size) {
+      const share = Math.random();
+      tiles.push({ x, y, delay: (Math.acos(1 - 2 * share) / Math.PI) * REVEAL_MS });
+    }
+  }
+
+  const start = performance.now();
+  let frame = 0;
+  const draw = (now: number) => {
+    let finished = true;
+    ctx.clearRect(0, 0, width, height);
+    for (const tile of tiles) {
+      const progress = (now - start - tile.delay) / TILE_FADE_MS;
+      if (progress < 1) finished = false;
+      if (progress <= 0) continue;
+      ctx.globalAlpha = 1 - (1 - Math.min(progress, 1)) ** 3;
+      ctx.drawImage(
+        image,
+        offsetX + tile.x / scale,
+        offsetY + tile.y / scale,
+        size / scale,
+        size / scale,
+        tile.x,
+        tile.y,
+        size,
+        size,
+      );
+    }
+    if (!finished) frame = requestAnimationFrame(draw);
+  };
+  frame = requestAnimationFrame(draw);
+  return () => cancelAnimationFrame(frame);
+}
+
+// Splits text into masked words and letters, so each letter can rise into view on its own.
+function RevealText({ className, text }: { className: string; text: string }) {
+  let letterIndex = 0;
+  return (
+    <span className={className}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">
+        {text.split(" ").map((word, wordIndex) => (
+          <span key={wordIndex} className="reveal-word">
+            {[...word].map((letter, index) => (
+              <span
+                key={index}
+                className="reveal-letter"
+                style={{ "--i": letterIndex++ } as React.CSSProperties}
+              >
+                {letter}
+              </span>
+            ))}
+          </span>
+        ))}
+      </span>
+    </span>
+  );
+}
 
 export default function ProjectList() {
   const listRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [active, setActive] = useState<string | null>(null);
-  const activeProject = projects.find((project) => project.slug === active);
+  const activeCover = projects.find((project) => project.slug === active)?.cover;
+
+  // Loads every cover up front, so the first hover has something to show straight away.
+  useEffect(() => {
+    projects.forEach((project) => coverImage(coverSrc(project.cover)));
+  }, []);
+
+  // Restarts the reveal for each hovered project; leaving a project clears the picture at once.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
+    if (!activeCover) return;
+
+    const image = coverImage(coverSrc(activeCover));
+    let stop = () => {};
+    const start = () => {
+      stop = revealInTiles(canvas, image);
+    };
+    if (image.complete && image.naturalWidth) start();
+    else image.addEventListener("load", start, { once: true });
+    return () => {
+      image.removeEventListener("load", start);
+      stop();
+    };
+  }, [activeCover]);
 
   // Three copies of the list: scrolling past either end jumps by one copy, so it never ends.
   useEffect(() => {
@@ -35,23 +157,24 @@ export default function ProjectList() {
     const preview = previewRef.current;
     if (!preview || !window.matchMedia("(hover: hover)").matches) return;
     const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const eased = { ...target };
     const current = { ...target };
     let frame = 0;
+    let last = performance.now();
 
     const onMove = (event: PointerEvent) => {
       target.x = event.clientX;
       target.y = event.clientY;
     };
-    const tick = () => {
-      current.x += (target.x - current.x) * 0.12;
-      current.y += (target.y - current.y) * 0.12;
-      // Sits right of the cursor so the hovered name stays readable, and never leaves the screen.
-      const x = Math.min(current.x + 32, window.innerWidth - preview.offsetWidth - 16);
-      const y = Math.max(
-        16,
-        Math.min(current.y - preview.offsetHeight / 2, window.innerHeight - preview.offsetHeight - 16),
-      );
-      preview.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    // Two chained followers give an ease-in-out: the picture starts gently, then settles gently.
+    const tick = (now: number) => {
+      const step = 1 - Math.exp(-Math.min(now - last, 50) / FOLLOW_MS);
+      last = now;
+      eased.x += (target.x - eased.x) * step;
+      eased.y += (target.y - eased.y) * step;
+      current.x += (eased.x - current.x) * step;
+      current.y += (eased.y - current.y) * step;
+      preview.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
       frame = requestAnimationFrame(tick);
     };
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -67,7 +190,7 @@ export default function ProjectList() {
       <div className={`loop${active ? " has-active" : ""}`} ref={listRef}>
         {COPIES.map((copy) => (
           <ul key={copy} className="loop-copy" aria-hidden={copy !== 1 || undefined}>
-            {projects.map((project, index) => (
+            {projects.map((project) => (
               <li key={project.slug}>
                 <Link
                   href={`/work/${project.slug}`}
@@ -78,8 +201,9 @@ export default function ProjectList() {
                   onFocus={() => setActive(project.slug)}
                   onBlur={() => setActive(null)}
                 >
-                  <span className="loop-index">{String(index + 1).padStart(2, "0")}</span>
+                  <RevealText className="loop-type" text={project.type} />
                   <span className="loop-name">{project.name}</span>
+                  <RevealText className="loop-year" text={project.year} />
                   <span className="loop-subtitle">{project.subtitle}</span>
                 </Link>
               </li>
@@ -89,16 +213,7 @@ export default function ProjectList() {
       </div>
 
       <div className="preview" ref={previewRef} aria-hidden="true">
-        {projects.map((project) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={project.slug}
-            src={`${project.cover}?scale-down-to=1024`}
-            alt=""
-            className={active === project.slug ? "is-active" : undefined}
-          />
-        ))}
-        {activeProject && <span className="preview-caption">{activeProject.subtitle}</span>}
+        <canvas ref={canvasRef} />
       </div>
     </>
   );

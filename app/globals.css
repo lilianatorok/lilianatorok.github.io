@@ -201,8 +201,14 @@ em {
 }
 
 .theme-switch {
+  align-items: flex-end;
   display: flex;
+  flex-direction: column;
   gap: 2px;
+  position: fixed;
+  right: var(--gutter);
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .theme-switch button {
@@ -252,11 +258,12 @@ em {
 }
 
 .menu li {
+  display: flex;
+  justify-content: flex-end;
   overflow: hidden;
 }
 
 .menu a {
-  display: block;
   font-family: var(--display);
   font-size: clamp(56px, min(9vw, 16vh), 190px);
   font-stretch: 62%;
@@ -266,19 +273,52 @@ em {
   text-transform: uppercase;
 }
 
-.menu a span {
+.menu-slide {
   display: inline-block;
   transform: translateX(110%);
-  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1), color 0.2s ease;
+  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-.menu.is-open a span {
+.menu.is-open .menu-slide {
   transform: none;
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) calc(0.3s + var(--i) * 0.07s), color 0.2s ease;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) calc(0.3s + var(--i) * 0.07s);
 }
 
-.menu a:hover span {
-  color: var(--accent);
+/* Rolling letters on the menu links and the Menu and Close buttons */
+
+.roll {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.roll-letter {
+  display: inline-block;
+  position: relative;
+}
+
+.roll-letter::after {
+  content: attr(data-letter);
+  left: 0;
+  position: absolute;
+  top: 100%;
+}
+
+.roll.is-rolling .roll-letter {
+  animation: roll var(--roll-duration, 0.65s) cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * var(--roll-stagger, 21ms));
+}
+
+/* The big links travel much further in the same time, so they get longer to look equally calm. */
+.menu a {
+  --roll-duration: 1s;
+  --roll-stagger: 40ms;
+}
+
+@keyframes roll {
+  to {
+    transform: translateY(-100%);
+  }
 }
 
 .menu-note {
@@ -302,7 +342,8 @@ em {
   left: var(--gutter);
   line-height: 1.4;
   position: fixed;
-  width: 19vw;
+  width: 12vw;
+  min-width: 160px;
   z-index: 10;
 }
 
@@ -311,37 +352,97 @@ em {
   font-size: 1.2em;
 }
 
-.loop {
-  padding-left: 24vw;
+/* The middle column is as wide as the widest name, and every link fills exactly that column, so
+   all the names react to the mouse inside one shared frame. */
+
+.loop-copy {
+  display: grid;
+  grid-template-columns: 1fr max-content 1fr;
+}
+
+.loop-copy li {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  position: relative;
 }
 
 .loop-row {
-  align-items: flex-start;
+  align-items: center;
   color: var(--ghost);
   display: flex;
-  gap: 1vw;
+  grid-column: 2;
+  justify-content: center;
   padding-block: 0.4vw;
-  position: relative;
   text-decoration: none;
   transition: color 0.25s ease;
 }
 
-.loop-index {
-  color: var(--muted);
-  font-size: 13px;
-  padding-top: 1.4vw;
-  width: 2.2vw;
+/* The type and year sit in fixed columns either side of the centered names, below the preview. */
+
+.loop-type,
+.loop-year {
+  color: var(--fg);
+  font-family: var(--display);
+  font-size: clamp(16px, 1.8vw, 30px);
+  font-stretch: 62%;
+  font-weight: 700;
+  line-height: 1.05;
+  pointer-events: none;
+  position: absolute;
+  text-transform: uppercase;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Each word is a mask; its letters wait below it and rise one after another on hover. */
+
+.reveal-word {
+  display: inline-block;
+  margin-right: 0.25em;
+  overflow: hidden;
+  padding-top: 0.2em;
+  vertical-align: top;
+}
+
+.reveal-word:last-child {
+  margin-right: 0;
+}
+
+.reveal-letter {
+  display: inline-block;
+  transform: translateY(130%);
+  transition: transform 0.35s cubic-bezier(0.55, 0, 0.8, 0.4);
+}
+
+.loop-row.is-active .reveal-letter {
+  transform: none;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 21ms);
+}
+
+.loop-type {
+  left: 14.5%;
+  max-width: 8.5vw;
+}
+
+.loop-year {
+  left: 83%;
 }
 
 .loop-name {
   font-family: var(--display);
-  font-size: 13.4vw;
+  font-size: 12vw;
   font-stretch: 62%;
   font-weight: 800;
   letter-spacing: -0.015em;
   line-height: 0.98;
   text-transform: uppercase;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   white-space: nowrap;
+}
+
+.loop-row.is-active .loop-name {
+  transform: translateX(1.5vw);
 }
 
 .loop-subtitle {
@@ -350,19 +451,6 @@ em {
 
 .loop-row.is-active {
   color: var(--fg);
-}
-
-.preview-caption {
-  background: var(--accent);
-  bottom: 0;
-  color: var(--on-accent);
-  font-family: var(--serif);
-  font-size: clamp(18px, 1.6vw, 24px);
-  font-style: italic;
-  left: 0;
-  line-height: 1.2;
-  padding: 4px 12px;
-  position: absolute;
 }
 
 .preview {
@@ -375,23 +463,19 @@ em {
   z-index: 20;
 }
 
-.preview img {
-  clip-path: inset(50% 50% 50% 50%);
+.preview canvas {
+  display: block;
   height: 100%;
-  inset: 0;
-  object-fit: cover;
-  position: absolute;
-  transition: clip-path 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   width: 100%;
-}
-
-.preview img.is-active {
-  clip-path: inset(0);
 }
 
 @media (hover: none) {
   .loop-row {
     color: var(--fg);
+  }
+
+  .reveal-letter {
+    transform: none;
   }
 
   .preview {
@@ -688,6 +772,13 @@ em {
     transform: translate(-72vw, -2vh) rotate(13deg);
   }
 
+  /* The names fill the whole width on phones, so the switch stays in the header. */
+  .theme-switch {
+    flex-direction: row;
+    position: static;
+    transform: none;
+  }
+
   .intro {
     background: var(--bg);
     border-top: 1px solid var(--line);
@@ -704,27 +795,60 @@ em {
     padding: 0 var(--gutter);
   }
 
-  .loop-row {
+  .loop-copy,
+  .loop-copy li {
     display: block;
-    padding-block: 10px;
   }
 
-  .loop-index {
-    display: none;
+  .loop-row {
+    flex-wrap: wrap;
+    gap: 2px 10px;
+    padding-block: 10px;
+    text-align: center;
   }
 
   .loop-name {
-    display: block;
+    flex-basis: 100%;
     font-size: 19vw;
+  }
+
+  .loop-row.is-active .loop-name {
+    transform: none;
   }
 
   .loop-subtitle {
     display: block;
+    flex-basis: 100%;
     font-family: var(--serif);
     font-size: 19px;
     font-style: italic;
     line-height: 1.1;
+    order: 1;
     padding-top: 2px;
+  }
+
+  /* No hover on phones, so the type and year are simply listed under the name. */
+  .loop-type,
+  .loop-year {
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 14px;
+    font-stretch: 100%;
+    font-weight: 400;
+    line-height: 1.3;
+    max-width: none;
+    order: 2;
+    position: static;
+    text-transform: none;
+    transform: none;
+  }
+
+  .reveal-letter {
+    transform: none;
+  }
+
+  .reveal-word {
+    padding-top: 0;
   }
 
   .facts {
@@ -749,9 +873,10 @@ em {
   }
 }
 
-/* The menu's sheet is left out on purpose: it is short and only runs when someone asks for it. */
+/* The menu's sheet and the hover effects are left out on purpose: they are short and only run when
+   someone asks for them. */
 @media (prefers-reduced-motion: reduce) {
-  *:not(.sheet, .menu a span),
+  *:not(.sheet, .menu-slide, .loop-name, .reveal-letter, .roll-letter),
   *::before,
   *::after {
     animation: none !important;

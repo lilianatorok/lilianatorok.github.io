@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { type Ref, useSyncExternalStore } from "react";
+import RollText from "@/components/RollText";
 
 type Theme = "light" | "dark";
 
@@ -61,7 +62,7 @@ export default function Header({
           aria-controls="site-menu"
           onClick={onOpenMenu}
         >
-          Menu
+          <RollText text="Menu" />
         </button>
       </div>
     </header>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import Header from "@/components/Header";
+import RollText from "@/components/RollText";
 
 const links = [
   { href: "/", label: "Work" },
@@ -44,13 +45,15 @@ export default function Shell({ children }: { children: ReactNode }) {
     <>
       <nav id="site-menu" className={`menu${open ? " is-open" : ""}`} inert={!open}>
         <button ref={closeRef} type="button" className="menu-close" onClick={() => setOpen(false)}>
-          Close
+          <RollText text="Close" />
         </button>
         <ul>
           {links.map((link, index) => (
             <li key={link.href} style={{ "--i": index } as React.CSSProperties}>
               <Link href={link.href} onClick={() => setOpen(false)}>
-                <span>{link.label}</span>
+                <span className="menu-slide">
+                  <RollText text={link.label} />
+                </span>
               </Link>
             </li>
           ))}

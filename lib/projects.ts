@@ -6,6 +6,8 @@ export type ProjectImage = { src: string; width: number; height: number; alt: st
 
 export type Project = {
   slug: string;
+  type: string;
+  year: string;
   name: string;
   subtitle: string;
   cover: string;
@@ -19,6 +21,8 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "kh",
+    type: "Lorem ipsum",
+    year: "2025",
     name: "K&H",
     subtitle: "Bank group",
     cover: `${CDN}/yfILBw04ZGvgE2VWBmoQt2I0U.png`,
@@ -79,6 +83,8 @@ export const projects: Project[] = [
   },
   {
     slug: "factor",
+    type: "Dolor sit",
+    year: "2024",
     name: "Factor-MES",
     subtitle: "Case study",
     cover: `${CDN}/gBifZZX8JH7uu1UWzj6TGXj7xds.png`,
@@ -86,6 +92,8 @@ export const projects: Project[] = [
   },
   {
     slug: "szamos",
+    type: "Amet elit",
+    year: "2023",
     name: "Szamos",
     subtitle: "Chocolate school",
     cover: `${CDN}/t0Pff8K4jD70Mv2iBSh20Hxhw.png`,
@@ -93,6 +101,8 @@ export const projects: Project[] = [
   },
   {
     slug: "maklary",
+    type: "Sed tempor",
+    year: "2022",
     name: "Makláry",
     subtitle: "Fine art gallery",
     cover: `${CDN}/8Ydu0FPqHW0iyPT6LQ6YUAdEHKs.png`,
@@ -100,6 +110,8 @@ export const projects: Project[] = [
   },
   {
     slug: "total",
+    type: "Ut labore",
+    year: "2021",
     name: "Totál-Épker",
     subtitle: "Case study",
     cover: `${CDN}/wTJCohDqICYhg8cL2iwlkPn2LQ.png`,
@@ -107,6 +119,8 @@ export const projects: Project[] = [
   },
   {
     slug: "beres",
+    type: "Magna aliqua",
+    year: "2020",
     name: "Béres",
     subtitle: "Vineyards and winery",
     cover: `${CDN}/wnyGECh3Fz5lGlTK3uYki9TEBY.png`,
