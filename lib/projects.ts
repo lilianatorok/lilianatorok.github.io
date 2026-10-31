@@ -82,6 +82,15 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "system",
+    type: "Multi-brand CMS",
+    year: "2024",
+    name: "One System",
+    subtitle: "Four brands, one CMS",
+    cover: `${CDN}/wTJCohDqICYhg8cL2iwlkPn2LQ.png`,
+    images: [],
+  },
+  {
     slug: "factor",
     type: "Dolor sit",
     year: "2024",
@@ -90,41 +99,214 @@ export const projects: Project[] = [
     cover: `${CDN}/gBifZZX8JH7uu1UWzj6TGXj7xds.png`,
     images: [{ src: `${CDN}/Fm7s4bFpwJSDvlXdwQY0bdDOK0.gif`, width: 1920, height: 13039, alt: "Factor-MES case study" }],
   },
+];
+
+export type CropArea = {
+  src: string;
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  contain?: boolean;
+};
+
+export type BrandVariables = {
+  bg: string;
+  surface: string;
+  fg: string;
+  accent: string;
+  onAccent: string;
+  headerBg: string;
+  headerFg: string;
+  radius: string;
+  heading: string;
+  body: string;
+  headingName: string;
+  bodyName: string;
+};
+
+export type Brand = {
+  id: string;
+  name: string;
+  kind: string;
+  cover: string;
+  logo: string;
+  nav: string[];
+  hero: { title: string; text: string; action: string; image: CropArea };
+  cards: { title: string; meta: string; price: string; image: CropArea }[];
+  cardAction: string;
+  variables: BrandVariables;
+  structure: { list: string; detail: string; card: string };
+  added: { title: string; text: string; image: CropArea };
+};
+
+const maklary = { src: `${CDN}/Qiu2VquYrLTkD5zTLMoWnjvzT0.png`, width: 1920, height: 27100 };
+const beres = { src: `${CDN}/cDn0alDAWrp3hPFqrNVS90SBx8.gif`, width: 1920, height: 15393 };
+const total = { src: `${CDN}/rNIhX2eqI1cfIDwlpbifg0wbGYo.png`, width: 1920, height: 21900 };
+const szamos = { src: `${CDN}/GcEDGgTWP7QbxxSlepF412dR7G0.png`, width: 1920, height: 25840 };
+
+export const brands: Brand[] = [
   {
-    slug: "szamos",
-    type: "Amet elit",
-    year: "2023",
-    name: "Szamos",
-    subtitle: "Chocolate school",
-    cover: `${CDN}/t0Pff8K4jD70Mv2iBSh20Hxhw.png`,
-    images: [{ src: `${CDN}/GcEDGgTWP7QbxxSlepF412dR7G0.png`, width: 1920, height: 25840, alt: "Szamos chocolate school case study" }],
-  },
-  {
-    slug: "maklary",
-    type: "Sed tempor",
-    year: "2022",
+    id: "maklary",
     name: "Makláry",
-    subtitle: "Fine art gallery",
+    kind: "Fine art gallery",
     cover: `${CDN}/8Ydu0FPqHW0iyPT6LQ6YUAdEHKs.png`,
-    images: [{ src: `${CDN}/Qiu2VquYrLTkD5zTLMoWnjvzT0.png`, width: 1920, height: 27100, alt: "Maklary's fine art gallery case study" }],
+    logo: "Kálmán Makláry Fine Arts",
+    nav: ["Artists", "Exhibitions", "Shop", "News"],
+    hero: {
+      title: "Modern & contemporary gallery",
+      text: "Artists of the Post-War School of Paris.",
+      action: "See exhibitions",
+      image: { ...maklary, x: 590, y: 792, w: 750, h: 500 },
+    },
+    cards: [
+      { title: "Reigl Judit 100", meta: "Exhibition", price: "2024", image: { ...maklary, x: 1224, y: 9090, w: 432, h: 324 } },
+      { title: "Judit Reigl", meta: "Artist", price: "Paris", image: { ...maklary, x: 682, y: 14784, w: 278, h: 360 } },
+      { title: "Abstract work", meta: "Artwork", price: "On request", image: { ...maklary, x: 206, y: 10584, w: 210, h: 150 } },
+    ],
+    cardAction: "More",
+    variables: {
+      bg: "#ffffff",
+      surface: "#eae9e9",
+      fg: "#212121",
+      accent: "#e30613",
+      onAccent: "#ffffff",
+      headerBg: "#ffffff",
+      headerFg: "#212121",
+      radius: "0px",
+      heading: "var(--font-cinzel)",
+      body: "var(--font-crimson)",
+      headingName: "Trajan Pro",
+      bodyName: "Crimson Text",
+    },
+    structure: { list: "Artists, exhibitions, news", detail: "Artwork, exhibition", card: "Art card" },
+    added: {
+      title: "One card, many jobs",
+      text: "A single main card holds every element. Switching elements off turns it into an artist, artwork, exhibition, news or book card.",
+      image: { ...maklary, x: 168, y: 10480, w: 1560, h: 640 },
+    },
   },
   {
-    slug: "total",
-    type: "Ut labore",
-    year: "2021",
-    name: "Totál-Épker",
-    subtitle: "Case study",
-    cover: `${CDN}/wTJCohDqICYhg8cL2iwlkPn2LQ.png`,
-    images: [{ src: `${CDN}/rNIhX2eqI1cfIDwlpbifg0wbGYo.png`, width: 1920, height: 21900, alt: "Totál-Épker case study" }],
-  },
-  {
-    slug: "beres",
-    type: "Magna aliqua",
-    year: "2020",
+    id: "beres",
     name: "Béres",
-    subtitle: "Vineyards and winery",
+    kind: "Vineyards and winery",
     cover: `${CDN}/wnyGECh3Fz5lGlTK3uYki9TEBY.png`,
-    images: [{ src: `${CDN}/cDn0alDAWrp3hPFqrNVS90SBx8.gif`, width: 1920, height: 15393, alt: "Béres vineyards and winery case study" }],
+    logo: "Béres Tokaj",
+    nav: ["Borok", "A birtok", "Család", "Kapcsolat"],
+    hero: {
+      title: "Minden cseppje Béres",
+      text: "Tokaji borok a családi birtokról.",
+      action: "Borok megtekintése",
+      image: { ...beres, x: 96, y: 7368, w: 816, h: 456 },
+    },
+    cards: [
+      { title: "Tokaji Aszú", meta: "6 puttonyos", price: "8 000 Ft", image: { ...beres, x: 1290, y: 5832, w: 160, h: 648, contain: true } },
+      { title: "Lőcse Furmint", meta: "Száraz", price: "24 000 Ft", image: { ...beres, x: 150, y: 6620, w: 1170, h: 370, contain: true } },
+      { title: "Hárslevelű", meta: "Édes", price: "5 400 Ft", image: { ...beres, x: 830, y: 125, w: 110, h: 355, contain: true } },
+    ],
+    cardAction: "Kosárba",
+    variables: {
+      bg: "#fffdf7",
+      surface: "#f4ecd8",
+      fg: "#1d1a14",
+      accent: "#d2b26a",
+      onAccent: "#1d1a14",
+      headerBg: "#fffdf7",
+      headerFg: "#1d1a14",
+      radius: "2px",
+      heading: "var(--font-playfair)",
+      body: "var(--font-roboto)",
+      headingName: "Playfair Display",
+      bodyName: "Roboto",
+    },
+    structure: { list: "Wines", detail: "Wine", card: "Product card" },
+    added: {
+      title: "A card for the best wines",
+      text: "Next to the default product card came a featured one for seasonal wines, and the product page got tabs for the wine details.",
+      image: { ...beres, x: 72, y: 5808, w: 1728, h: 1248 },
+    },
+  },
+  {
+    id: "total",
+    name: "Totál-Épker",
+    kind: "Building materials webshop",
+    cover: `${CDN}/wTJCohDqICYhg8cL2iwlkPn2LQ.png`,
+    logo: "totálEPKER",
+    nav: ["Termékek", "Hírek", "Ajánlat", "Kapcsolat"],
+    hero: {
+      title: "Szakértelem minden felületre",
+      text: "Festékek és építőanyagok egy helyen.",
+      action: "Termékek",
+      image: { ...total, x: 984, y: 6384, w: 864, h: 840 },
+    },
+    cards: [
+      { title: "Héra Gold falfesték", meta: "Beltéri, 3 kiszerelés", price: "12 320 Ft", image: { ...total, x: 144, y: 19488, w: 456, h: 336 } },
+      { title: "Dulux falfesték", meta: "Beltéri, 10 szín", price: "9 500 Ft", image: { ...total, x: 840, y: 12985, w: 264, h: 239 } },
+      { title: "Héra Gold 10 L", meta: "Beltéri", price: "9 500 Ft", image: { ...total, x: 840, y: 12360, w: 240, h: 216 } },
+    ],
+    cardAction: "Kosárba",
+    variables: {
+      bg: "#f6f4ea",
+      surface: "#ffffff",
+      fg: "#003b21",
+      accent: "#ede937",
+      onAccent: "#003b21",
+      headerBg: "#003b21",
+      headerFg: "#ffffff",
+      radius: "12px",
+      heading: "var(--font-poppins)",
+      body: "var(--font-poppins)",
+      headingName: "Poppins",
+      bodyName: "Poppins",
+    },
+    structure: { list: "Paints and materials", detail: "Product", card: "Product card" },
+    added: {
+      title: "Variations in the list",
+      text: "A new product card lets customers add any mix of colours and sizes to the cart straight from the listing, without opening the detail page.",
+      image: { ...total, x: 120, y: 20760, w: 1656, h: 640 },
+    },
+  },
+  {
+    id: "szamos",
+    name: "Szamos",
+    kind: "Chocolate school",
+    cover: `${CDN}/t0Pff8K4jD70Mv2iBSh20Hxhw.png`,
+    logo: "Szamos Csokoládé Iskola",
+    nav: ["Kurzusok", "Programok", "Ajándékkártya", "Kapcsolat"],
+    hero: {
+      title: "Indul a tavaszi csokoládé műhely",
+      text: "Készítsd el a saját bonbonjaidat a mestercukrászokkal.",
+      action: "Tavaszi kurzusok",
+      image: { ...szamos, x: 200, y: 4008, w: 1650, h: 1100 },
+    },
+    cards: [
+      { title: "Macaron", meta: "Kurzus", price: "Tavasz", image: { ...szamos, x: 854, y: 15796, w: 120, h: 90 } },
+      { title: "Le croissant", meta: "Kurzus", price: "Tavasz", image: { ...szamos, x: 1190, y: 15796, w: 120, h: 90 } },
+      { title: "Cukrászkurzus", meta: "Kurzus", price: "Tavasz", image: { ...szamos, x: 1460, y: 15796, w: 120, h: 90 } },
+    ],
+    cardAction: "Részletek",
+    variables: {
+      bg: "#fbf6f7",
+      surface: "#ffffff",
+      fg: "#4a1a1e",
+      accent: "#c2204f",
+      onAccent: "#ffffff",
+      headerBg: "#ffffff",
+      headerFg: "#4a1a1e",
+      radius: "6px",
+      heading: "var(--font-merriweather)",
+      body: "var(--font-raleway)",
+      headingName: "Merriweather",
+      bodyName: "Raleway",
+    },
+    structure: { list: "Courses, programmes", detail: "Course", card: "Course card" },
+    added: {
+      title: "Programmes, not products",
+      text: "Courses, team building and gift cards moved onto the same list and detail templates, and the whole site was checked against WCAG.",
+      image: { ...szamos, x: 840, y: 15480, w: 816, h: 1056 },
+    },
   },
 ];
 

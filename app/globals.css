@@ -482,6 +482,22 @@ em {
   padding: calc(var(--gutter) * 2 + 72px) var(--gutter) 0;
 }
 
+/* Project pages sit in one column, 1140px wide at 1440 and 1370px at 1920. The side padding keeps
+   it clear of the theme switch. */
+
+.project {
+  /* Grows with the screen, a touch under the template's size, but always fits the two-line title. */
+  --h1: min(max(144px, 10vw), 228px, calc((100vw - 176px) / 5));
+  margin-inline: auto;
+  max-width: calc(min(1370px, 47.9vw + 450px) + 176px);
+  padding-inline: 88px;
+}
+
+.project .display {
+  font-size: var(--h1);
+  line-height: 1;
+}
+
 .project-subtitle {
   font-family: var(--label);
   font-size: clamp(26px, 3.2vw, 48px);
@@ -576,7 +592,7 @@ em {
 .next-project strong {
   display: block;
   font-family: var(--display);
-  font-size: clamp(64px, 14vw, 260px);
+  font-size: var(--h1);
   font-weight: 400;
   line-height: 1.15;
   text-transform: uppercase;
@@ -585,6 +601,376 @@ em {
 
 .next-project:hover strong {
   color: var(--accent);
+}
+
+/* One System */
+
+.one-system .facts {
+  margin-top: clamp(40px, 5vw, 96px);
+}
+
+/* While the brands change the page's scrolling is off, and the scrollbar's space stays reserved so
+   nothing shifts. The slack keeps the stage pinned if momentum carries the page slightly past it. */
+
+.scroller:has(.os-pin) {
+  scrollbar-gutter: stable;
+}
+
+.scroller.os-locked {
+  overflow-y: hidden;
+}
+
+.os-pin {
+  --os-slack: 200px; /* Keep in step with SLACK_PX in IdeaPin. */
+  height: calc(100svh + var(--os-slack));
+  margin-top: min(24px, calc(340px - 50svh)); /* Pulls up the empty top of the centered stage. */
+}
+
+.os-pin-stage {
+  align-content: center;
+  align-items: start;
+  display: grid;
+  gap: var(--gutter) clamp(32px, 4vw, 72px);
+  grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr);
+  height: 100svh;
+  padding-block: 72px var(--gutter);
+  position: sticky;
+  top: 0;
+}
+
+.os-pin-text h2 {
+  font-family: var(--label);
+  font-size: clamp(30px, 3.2vw, 48px);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.os-pin-text p {
+  font-size: clamp(14px, 1.1vw, 17px);
+  line-height: 1.6;
+  max-width: 44ch;
+}
+
+.os-pin-image {
+  aspect-ratio: 3 / 2;
+  display: block;
+  width: 100%;
+}
+
+.os-pin-current {
+  margin-top: clamp(24px, 2.5vw, 40px);
+  min-height: 72px;
+}
+
+.os-pin-name {
+  display: block;
+  font-family: var(--label);
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.1;
+}
+
+.os-pin-kind {
+  color: var(--muted);
+  display: block;
+  font-size: 13px;
+}
+
+.os-pin-current .reveal-word {
+  padding-top: 0;
+}
+
+.os-pin-current .reveal-letter {
+  animation: reveal-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 21ms) both;
+}
+
+@keyframes reveal-rise {
+  from {
+    transform: translateY(130%);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+.os-split {
+  display: grid;
+  gap: var(--gutter);
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: clamp(32px, 4vw, 64px);
+}
+
+.os-split h3 {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.os-split li {
+  border-top: 1px solid var(--line);
+  font-family: var(--display);
+  font-size: clamp(26px, 4vw, 56px);
+  line-height: 1.25;
+  padding-block: 6px;
+  text-transform: uppercase;
+}
+
+.os-split > div:last-child li {
+  color: var(--accent);
+}
+
+/* Everything inside the stage reads the brand's variables, and only those change on a switch. */
+
+.os-switcher {
+  margin-top: clamp(72px, 11vw, 200px);
+}
+
+.os-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin-bottom: 16px;
+}
+
+.os-tabs button {
+  color: var(--ghost);
+  font-family: var(--display);
+  font-size: clamp(28px, 5vw, 64px);
+  line-height: 1.15;
+  text-transform: uppercase;
+  transition: color 0.25s ease;
+}
+
+.os-tabs button:hover {
+  color: var(--muted);
+}
+
+.os-tabs button[aria-pressed="true"] {
+  color: var(--fg);
+}
+
+.os-stage {
+  display: grid;
+  gap: var(--gutter);
+  grid-template-columns: minmax(0, 1fr) 200px;
+}
+
+.os-stage * {
+  transition:
+    background-color 0.5s ease,
+    border-color 0.5s ease,
+    border-radius 0.5s ease,
+    color 0.5s ease;
+}
+
+.os-demo {
+  background: var(--b-bg);
+  color: var(--b-fg);
+  font-family: var(--b-body);
+  font-size: 15px;
+  line-height: 1.4;
+  overflow: hidden;
+}
+
+.os-demo-header {
+  align-items: center;
+  background: var(--b-header-bg);
+  color: var(--b-header-fg);
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  padding: 14px clamp(16px, 2vw, 32px);
+}
+
+.os-demo-header strong {
+  font-family: var(--b-heading);
+  white-space: nowrap;
+}
+
+.os-demo-header ul {
+  display: flex;
+  gap: clamp(12px, 1.6vw, 24px);
+}
+
+.os-demo-hero {
+  align-items: center;
+  display: grid;
+  gap: clamp(16px, 2vw, 32px);
+  grid-template-columns: 2fr 3fr;
+  padding: clamp(16px, 2vw, 32px);
+}
+
+.os-demo-hero h3 {
+  font-family: var(--b-heading);
+  font-size: clamp(24px, 2.8vw, 38px);
+  font-weight: inherit;
+  line-height: 1.15;
+}
+
+.os-demo-hero p {
+  margin-block: 10px 18px;
+}
+
+.os-demo-button {
+  background: var(--b-accent);
+  border-radius: var(--b-radius);
+  color: var(--b-on-accent);
+  display: inline-block;
+  padding: 7px 14px;
+}
+
+.os-demo-image {
+  animation: os-fade 0.5s ease both;
+  border-radius: var(--b-radius);
+  display: block;
+  width: 100%;
+}
+
+.os-demo-hero .os-demo-image {
+  aspect-ratio: 3 / 2;
+}
+
+@keyframes os-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.os-demo-cards {
+  display: grid;
+  gap: clamp(12px, 1.4vw, 20px);
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0 clamp(16px, 2vw, 32px) clamp(16px, 2vw, 32px);
+}
+
+.os-demo-cards article {
+  background: var(--b-surface);
+  border-radius: var(--b-radius);
+  overflow: hidden;
+}
+
+.os-demo-cards .os-demo-image {
+  aspect-ratio: 4 / 3;
+  background: var(--b-bg);
+  border-radius: 0;
+}
+
+.os-demo-cards article > div {
+  padding: 12px;
+}
+
+.os-demo-cards span:first-child {
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+.os-demo-cards h4 {
+  font-family: var(--b-heading);
+  font-size: 1.2em;
+  font-weight: inherit;
+  line-height: 1.2;
+}
+
+.os-demo-cards p {
+  margin-block: 4px 12px;
+}
+
+.os-side {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.os-side h3 {
+  font-family: var(--label);
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.os-tokens > div {
+  border-top: 1px solid var(--line);
+  padding-block: 8px;
+}
+
+.os-tokens dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.os-tokens dd {
+  align-items: center;
+  display: flex;
+  font-size: 13px;
+  gap: 8px;
+}
+
+.os-tokens i {
+  border: 1px solid var(--line);
+  height: 14px;
+  width: 14px;
+}
+
+.os-added {
+  display: grid;
+  gap: clamp(32px, 4vw, 64px) var(--gutter);
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: clamp(32px, 4vw, 64px);
+}
+
+.os-added-image {
+  aspect-ratio: 16 / 10;
+  background: var(--ghost);
+  display: block;
+  margin-bottom: 14px;
+  width: 100%;
+}
+
+.os-added span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.os-added h3 {
+  font-family: var(--label);
+  font-size: clamp(26px, 2.8vw, 42px);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.os-added p {
+  font-size: clamp(14px, 1.1vw, 17px);
+  line-height: 1.6;
+  max-width: 52ch;
+}
+
+.os-numbers {
+  display: grid;
+  gap: var(--gutter);
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: clamp(32px, 4vw, 64px);
+}
+
+.os-numbers strong {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(48px, 8vw, 112px);
+  font-weight: 400;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.os-numbers > div:first-child strong {
+  color: var(--accent);
+}
+
+.os-numbers p {
+  font-size: clamp(14px, 1.1vw, 17px);
+  max-width: 34ch;
 }
 
 /* About */
@@ -855,15 +1241,47 @@ em {
     grid-template-columns: 1fr;
   }
 
+  .project {
+    --h1: 18vw;
+    padding-inline: var(--gutter);
+  }
+
+  .os-pin {
+    margin-top: 24px;
+  }
+
+  .os-pin-stage {
+    align-content: center;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .os-tokens {
+    column-gap: var(--gutter);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .os-stage,
+  .os-demo-hero,
+  .os-demo-cards,
+  .os-added,
+  .os-numbers {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .os-demo-header ul {
+    display: none;
+  }
+
   .also-me-grid {
     columns: 2;
   }
 }
 
-/* The menu's sheet and the hover effects are left out on purpose: they are short and only run when
-   someone asks for them. */
+/* The menu's sheet, the hover effects and the brand switch are left out on purpose: they are short
+   and only run when someone asks for them. */
 @media (prefers-reduced-motion: reduce) {
-  *:not(.sheet, .menu-slide, .loop-name, .reveal-letter, .roll-letter),
+  *:not(.sheet, .menu-slide, .loop-name, .reveal-letter, .roll-letter, .os-stage *),
   *::before,
   *::after {
     animation: none !important;
