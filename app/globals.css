@@ -7,8 +7,9 @@
   --accent: #ff4a1c;
   --on-accent: #141311;
   --gutter: clamp(16px, 2vw, 32px);
-  --display: var(--font-archivo), "Arial Narrow", sans-serif;
-  --serif: var(--font-serif), Georgia, serif;
+  --font: var(--font-geist-mono), ui-monospace, monospace;
+  --display: var(--font-anton), Impact, sans-serif;
+  --label: var(--font-bebas), Impact, sans-serif;
   color-scheme: light;
 }
 
@@ -40,7 +41,7 @@ body {
 body {
   background: #000;
   color: var(--fg);
-  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-family: var(--font);
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -113,8 +114,8 @@ ul {
 }
 
 em {
-  font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
+  font-weight: 700;
 }
 
 :focus-visible {
@@ -134,19 +135,15 @@ em {
 
 .display {
   font-family: var(--display);
-  font-size: clamp(64px, 17vw, 300px);
-  font-stretch: 62%;
-  font-weight: 800;
-  letter-spacing: -0.015em;
-  line-height: 1.04;
+  font-size: clamp(64px, 14vw, 260px);
+  font-weight: 400;
+  line-height: 1.15;
   text-transform: uppercase;
 }
 
 .display em {
-  font-size: 0.92em;
+  color: var(--accent);
   font-weight: 400;
-  letter-spacing: -0.02em;
-  text-transform: none;
 }
 
 .status {
@@ -187,9 +184,9 @@ em {
 }
 
 .wordmark {
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-family: var(--label);
+  font-size: 24px;
+  line-height: 1;
   text-decoration: none;
 }
 
@@ -213,6 +210,7 @@ em {
 
 .theme-switch button {
   border-radius: 99px;
+  font-size: 13px;
   padding: 2px 10px;
   text-transform: capitalize;
 }
@@ -223,7 +221,9 @@ em {
 }
 
 .menu-toggle {
-  font-weight: 700;
+  font-family: var(--label);
+  font-size: 22px;
+  line-height: 1;
 }
 
 /* Menu, waiting behind the sheet */
@@ -250,8 +250,9 @@ em {
 }
 
 .menu-close {
-  font-size: 15px;
-  font-weight: 700;
+  font-family: var(--label);
+  font-size: 22px;
+  line-height: 1;
   position: absolute;
   right: var(--gutter);
   top: var(--gutter);
@@ -266,9 +267,7 @@ em {
 .menu a {
   font-family: var(--display);
   font-size: clamp(56px, min(9vw, 16vh), 190px);
-  font-stretch: 62%;
-  font-weight: 800;
-  line-height: 1.02;
+  line-height: 1.12;
   text-decoration: none;
   text-transform: uppercase;
 }
@@ -323,9 +322,7 @@ em {
 
 .menu-note {
   bottom: var(--gutter);
-  font-family: var(--serif);
-  font-size: clamp(18px, 1.6vw, 24px);
-  font-style: italic;
+  font-size: 13px;
   max-width: 60vw;
   position: absolute;
   right: var(--gutter);
@@ -337,7 +334,7 @@ em {
   bottom: var(--gutter);
   display: flex;
   flex-direction: column;
-  font-size: 14px;
+  font-size: 13px;
   gap: 14px;
   left: var(--gutter);
   line-height: 1.4;
@@ -349,7 +346,6 @@ em {
 
 .intro em {
   color: var(--accent);
-  font-size: 1.2em;
 }
 
 /* The middle column is as wide as the widest name, and every link fills exactly that column, so
@@ -383,10 +379,8 @@ em {
 .loop-type,
 .loop-year {
   color: var(--fg);
-  font-family: var(--display);
-  font-size: clamp(16px, 1.8vw, 30px);
-  font-stretch: 62%;
-  font-weight: 700;
+  font-family: var(--label);
+  font-size: clamp(18px, 1.8vw, 30px);
   line-height: 1.05;
   pointer-events: none;
   position: absolute;
@@ -431,11 +425,8 @@ em {
 
 .loop-name {
   font-family: var(--display);
-  font-size: 12vw;
-  font-stretch: 62%;
-  font-weight: 800;
-  letter-spacing: -0.015em;
-  line-height: 0.98;
+  font-size: 11vw;
+  line-height: 1.12;
   text-transform: uppercase;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   white-space: nowrap;
@@ -492,9 +483,8 @@ em {
 }
 
 .project-subtitle {
-  font-family: var(--serif);
-  font-size: clamp(26px, 3.4vw, 52px);
-  font-style: italic;
+  font-family: var(--label);
+  font-size: clamp(26px, 3.2vw, 48px);
   line-height: 1.1;
   margin-top: 16px;
 }
@@ -529,18 +519,17 @@ em {
 }
 
 .case-section h2 {
-  font-family: var(--serif);
+  font-family: var(--label);
   font-size: clamp(30px, 3.2vw, 48px);
-  font-style: italic;
   font-weight: 400;
   grid-column: 1 / span 5;
   line-height: 1.1;
 }
 
 .case-section > div {
-  font-size: clamp(17px, 1.35vw, 21px);
+  font-size: clamp(14px, 1.1vw, 17px);
   grid-column: 6 / -1;
-  line-height: 1.45;
+  line-height: 1.6;
   max-width: 62ch;
 }
 
@@ -587,10 +576,9 @@ em {
 .next-project strong {
   display: block;
   font-family: var(--display);
-  font-size: clamp(64px, 17vw, 300px);
-  font-stretch: 62%;
-  font-weight: 800;
-  line-height: 0.95;
+  font-size: clamp(64px, 14vw, 260px);
+  font-weight: 400;
+  line-height: 1.15;
   text-transform: uppercase;
   transition: color 0.25s ease;
 }
@@ -617,17 +605,18 @@ em {
 .about-intro > div {
   display: flex;
   flex-direction: column;
-  font-size: clamp(17px, 1.35vw, 21px);
+  font-size: clamp(14px, 1.1vw, 17px);
   gap: 20px;
+  line-height: 1.6;
   grid-column: 6 / -1;
   max-width: 62ch;
 }
 
 .about-quote {
-  font-size: clamp(32px, 4vw, 64px);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.05;
+  font-family: var(--display);
+  font-size: clamp(36px, 4.4vw, 72px);
+  line-height: 1.15;
+  text-transform: uppercase;
   margin-bottom: 16px;
 }
 
@@ -646,9 +635,8 @@ em {
 }
 
 .services h2 {
-  font-family: var(--serif);
+  font-family: var(--label);
   font-size: clamp(30px, 3.2vw, 48px);
-  font-style: italic;
   font-weight: 400;
   grid-column: 1 / span 5;
   line-height: 1.1;
@@ -661,10 +649,8 @@ em {
 .services li {
   border-bottom: 1px solid var(--line);
   font-family: var(--display);
-  font-size: clamp(36px, 5vw, 84px);
-  font-stretch: 62%;
-  font-weight: 800;
-  line-height: 1.1;
+  font-size: clamp(32px, 4.4vw, 76px);
+  line-height: 1.25;
   padding-block: 6px;
   text-transform: uppercase;
 }
@@ -674,7 +660,7 @@ em {
 }
 
 .also-me .display {
-  font-size: clamp(56px, 12vw, 210px);
+  font-size: clamp(56px, 11vw, 200px);
 }
 
 .also-me-grid {
@@ -707,7 +693,7 @@ em {
 }
 
 .contact-details {
-  font-size: clamp(18px, 1.8vw, 26px);
+  font-size: clamp(14px, 1.2vw, 18px);
   margin-top: 64px;
 }
 
@@ -737,18 +723,21 @@ em {
 }
 
 .footer-lead {
-  font-size: clamp(22px, 2.6vw, 40px);
-  letter-spacing: -0.02em;
+  font-family: var(--label);
+  font-size: clamp(24px, 2.6vw, 40px);
   line-height: 1.15;
+}
+
+.footer-lead em {
+  color: var(--accent);
+  font-weight: 400;
 }
 
 .footer-cta {
   display: block;
   font-family: var(--display);
-  font-size: clamp(64px, 17vw, 300px);
-  font-stretch: 62%;
-  font-weight: 800;
-  line-height: 1;
+  font-size: clamp(64px, 14vw, 260px);
+  line-height: 1.15;
   margin-top: 8px;
   text-decoration: none;
   text-transform: uppercase;
@@ -761,6 +750,7 @@ em {
 
 .footer-meta {
   border-top: 1px solid var(--line);
+  font-size: 13px;
   margin-top: clamp(32px, 4vw, 56px);
   padding-top: 16px;
 }
@@ -809,7 +799,7 @@ em {
 
   .loop-name {
     flex-basis: 100%;
-    font-size: 19vw;
+    font-size: 17vw;
   }
 
   .loop-row.is-active .loop-name {
@@ -819,9 +809,8 @@ em {
   .loop-subtitle {
     display: block;
     flex-basis: 100%;
-    font-family: var(--serif);
-    font-size: 19px;
-    font-style: italic;
+    font-family: var(--label);
+    font-size: 20px;
     line-height: 1.1;
     order: 1;
     padding-top: 2px;
@@ -831,10 +820,8 @@ em {
   .loop-type,
   .loop-year {
     color: var(--muted);
-    font-family: inherit;
-    font-size: 14px;
-    font-stretch: 100%;
-    font-weight: 400;
+    font-family: var(--font);
+    font-size: 12px;
     line-height: 1.3;
     max-width: none;
     order: 2;

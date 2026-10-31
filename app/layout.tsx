@@ -1,19 +1,23 @@
 import type { Metadata } from "next";
-import { Archivo, Instrument_Serif } from "next/font/google";
+import { Anton, Bebas_Neue, Geist_Mono } from "next/font/google";
 import Shell from "@/components/Shell";
 import "./globals.css";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
-  subsets: ["latin", "latin-ext"],
-  axes: ["wdth"],
-});
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-serif",
+const anton = Anton({
+  variable: "--font-anton",
   subsets: ["latin", "latin-ext"],
   weight: "400",
-  style: "italic",
+});
+
+const bebasNeue = Bebas_Neue({
+  variable: "--font-bebas",
+  subsets: ["latin", "latin-ext"],
+  weight: "400",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin", "latin-ext"],
 });
 
 export const metadata: Metadata = {
@@ -30,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       data-theme="light"
-      className={`${archivo.variable} ${instrumentSerif.variable}`}
+      className={`${anton.variable} ${bebasNeue.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <head>
