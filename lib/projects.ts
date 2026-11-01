@@ -320,6 +320,7 @@ export const contact = {
 export const portrait = `${CDN}/IkhRzmjkiXgkgd5qEhTtHJU5XPs.png`;
 
 export const alsoMe = [
+  "VC9D27zD0rliRvF9HWVyQo3WuBA.png",
   "Bgop64yvRfovVBSkG2CqPORMiU.png",
   "r9fjXy5kV9sf7WkasjmO6fXqFI.jpg",
   "EOAtlhJ6jcB9n3uMZpACiPoqo.jpeg",
@@ -336,6 +337,29 @@ export const alsoMe = [
   "OWbMeCpiENwNxVohjtfiQslK1fg.png",
   "ehZ5XXSr6NTmfEHGUb3XlQJ8bjA.jpeg",
 ].map((file) => `${CDN}/${file}`);
+
+export const faqs = [
+  {
+    question: "Do I get to pick the snacks while we brainstorm?",
+    answer:
+      "We can agree on this! Snacks are a non-negotiable part of my creative process 😄 I have a personal tier list of chips (yes, really) and I always keep a stash at home. Salty-sweet combos are my favorite, and I love trying unique international flavors. A good snack can even make tricky tasks a lot more fun.",
+  },
+  {
+    question: "How many cups of coffee does it take to make magic happen?",
+    answer:
+      "Just 1 or 2 cups of coffee… or a matcha if I’m feeling fancy. That little boost is usually all I need to focus and turn ideas into workable, creative solutions — small cup, big ideas.",
+  },
+  {
+    question: "What happens if we accidentally make the next big thing together?",
+    answer:
+      "We’d celebrate a little 😄, then focus on making sure the idea actually works, delivers real value, and can scale. The best part? Watching something grow from a spark into a product that truly makes an impact — all with an awesome team.",
+  },
+  {
+    question: "How does the creative chaos start?",
+    answer:
+      "I start by gathering all the info I can — best practices, bad practices, anything that helps me understand the problem. Then comes the fun part: a full-on brainstorm in my head, sketches everywhere, ideas bouncing off the walls 😅. Slowly, the chaos starts to settle, patterns emerge, and bit by bit the concept takes shape. Working closely with developers along the way helps me refine the details until it’s ready for launch — messy, fun, and always learning.",
+  },
+];
 
 export const services = [
   "Product design",

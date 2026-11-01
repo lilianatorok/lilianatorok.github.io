@@ -482,10 +482,11 @@ em {
   padding: calc(var(--gutter) * 2 + 72px) var(--gutter) 0;
 }
 
-/* Project pages sit in one column, 1140px wide at 1440 and 1370px at 1920. The side padding keeps
-   it clear of the theme switch. */
+/* Project and about pages sit in one column, 1140px wide at 1440 and 1370px at 1920. The side
+   padding keeps it clear of the theme switch. */
 
-.project {
+.project,
+.about {
   /* Grows with the screen, a touch under the template's size, but always fits the two-line title. */
   --h1: min(max(144px, 10vw), 228px, calc((100vw - 176px) / 5));
   margin-inline: auto;
@@ -975,61 +976,105 @@ em {
 
 /* About */
 
-.about-intro {
+/* As big as the project titles, as long as the longest word still fits on one line. */
+.about-title {
+  font-size: min(var(--h1), calc(min(1370px, 47.9vw + 450px, 100vw - 176px) / 8));
+  line-height: 1;
+}
+
+.about-title-words {
+  display: grid;
+}
+
+.about-title-words > * {
+  grid-area: 1 / 1;
+}
+
+.about-title-sizer {
+  visibility: hidden;
+}
+
+.about-title .reveal-word {
+  padding-top: 0;
+}
+
+.about-title-in .reveal-letter {
+  animation: reveal-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 21ms) both;
+}
+
+.about-title-out .reveal-letter {
+  animation: reveal-leave 0.65s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 21ms) both;
+}
+
+@keyframes reveal-leave {
+  from {
+    transform: none;
+  }
+
+  to {
+    transform: translateY(-130%);
+  }
+}
+
+/* The same share of the column as the template's Studio picture. */
+.about-picture {
+  aspect-ratio: 2782 / 1634;
+  display: block;
+  margin-top: clamp(40px, 6vw, 88px);
+  width: 74%;
+}
+
+.about-block {
   display: grid;
   gap: 24px;
   grid-template-columns: repeat(12, 1fr);
-  margin-top: clamp(40px, 6vw, 88px);
+  margin-top: clamp(64px, 9vw, 140px);
 }
 
-.about-intro img {
+.about-block > :last-child {
+  grid-column: 6 / -1;
+}
+
+/* Rides along on the left while its block scrolls past. */
+.about-block-title {
+  align-self: start;
+  font-size: 14px;
+  font-weight: 700;
   grid-column: 1 / span 5;
-  object-fit: cover;
-  width: 100%;
+  position: sticky;
+  text-transform: uppercase;
+  top: 240px;
 }
 
-.about-intro > div {
+.about-intro {
+  margin-top: clamp(40px, 5vw, 80px);
+}
+
+.about-intro-body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 3.3vw, 48px);
+}
+
+.about-text {
   display: flex;
   flex-direction: column;
   font-size: clamp(14px, 1.1vw, 17px);
   gap: 20px;
   line-height: 1.6;
-  grid-column: 6 / -1;
   max-width: 62ch;
 }
 
 .about-quote {
   font-family: var(--display);
-  font-size: clamp(36px, 4.4vw, 72px);
+  font-size: clamp(36px, 3.6vw, 64px);
   line-height: 1.15;
   text-transform: uppercase;
-  margin-bottom: 16px;
 }
 
 .about-quote em {
   color: var(--accent);
   font-weight: 400;
-}
-
-.services {
-  border-top: 1px solid var(--line);
-  display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(12, 1fr);
-  margin-top: clamp(64px, 9vw, 140px);
-  padding-top: 16px;
-}
-
-.services h2 {
-  font-family: var(--label);
-  font-size: clamp(30px, 3.2vw, 48px);
-  font-weight: 400;
-  grid-column: 1 / span 5;
-  line-height: 1.1;
-}
-
-.services ul {
-  grid-column: 6 / -1;
 }
 
 .services li {
@@ -1041,24 +1086,138 @@ em {
   text-transform: uppercase;
 }
 
+/* The title stays pinned behind the rolling columns for one screen of scrolling. */
 .also-me {
+  height: 200svh;
   margin-top: clamp(64px, 9vw, 140px);
 }
 
+.also-me-stage {
+  align-items: center;
+  container-type: inline-size;
+  display: flex;
+  height: 100svh;
+  justify-content: center;
+  overflow: hidden;
+  position: sticky;
+  top: 0;
+}
+
 .also-me .display {
-  font-size: clamp(56px, 11vw, 200px);
+  font-size: 12cqw;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.also-me-grid {
-  column-gap: var(--gutter);
-  columns: 5;
-  margin-top: clamp(32px, 4vw, 64px);
+.also-me-columns {
+  align-items: start;
+  column-gap: 6cqw;
+  display: grid;
+  grid-template-columns: repeat(4, 20.5cqw);
+  inset: 0;
+  justify-content: center;
+  position: absolute;
 }
 
-.also-me-grid img {
-  break-inside: avoid;
-  margin-bottom: var(--gutter);
+.also-me-column {
+  will-change: transform;
+}
+
+.also-me-column img {
+  aspect-ratio: 8 / 9;
+  display: block;
+  margin-bottom: 9cqw;
+  object-fit: cover;
   width: 100%;
+}
+
+.faq .about-block-title {
+  /* Level with the first question. */
+  margin-top: calc(clamp(28px, 3.3vw, 48px) + 4px);
+}
+
+.faq li {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq h3 {
+  font: inherit;
+}
+
+.faq button {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font-family: var(--label);
+  font-size: clamp(22px, 1.8vw, 26px);
+  gap: 24px;
+  justify-content: space-between;
+  line-height: 1.2;
+  padding-block: clamp(28px, 3.3vw, 48px);
+  text-align: left;
+  transition: padding-bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  width: 100%;
+}
+
+.faq button[aria-expanded="true"] {
+  padding-bottom: 8px;
+}
+
+/* A plus that turns into a cross. */
+.faq i {
+  flex: none;
+  height: 14px;
+  position: relative;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  width: 14px;
+}
+
+.faq i::before,
+.faq i::after {
+  background: currentColor;
+  content: "";
+  inset: 6px 0;
+  position: absolute;
+}
+
+.faq i::after {
+  transform: rotate(90deg);
+}
+
+.faq button[aria-expanded="true"] i {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition:
+    grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.45s;
+  visibility: hidden;
+}
+
+h3:has([aria-expanded="true"]) + .faq-answer {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+
+.faq-answer p {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 620px;
+  min-height: 0;
+  overflow: hidden;
+  padding-right: 38px;
+  text-transform: uppercase;
+  transition: padding-bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+h3:has([aria-expanded="true"]) + .faq-answer p {
+  padding-bottom: clamp(28px, 3.3vw, 48px);
 }
 
 /* Contact */
@@ -1230,20 +1389,58 @@ em {
 
   .case-section h2,
   .case-section > div,
-  .services h2,
-  .services ul,
-  .about-intro img,
-  .about-intro > div {
+  .about-block > :last-child,
+  .about-block-title {
     grid-column: 1 / -1;
+  }
+
+  .about-block-title {
+    position: static;
+  }
+
+  .about-picture {
+    width: 100%;
+  }
+
+  /* Edge to edge on a phone. The columns are wider than the screen, so the outer two roll past half
+     cut off. */
+  .also-me {
+    margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .also-me .display {
+    font-size: 13cqw;
+  }
+
+  .also-me-columns {
+    column-gap: 4cqw;
+    grid-template-columns: repeat(4, 32cqw);
+  }
+
+  .also-me-column img {
+    margin-bottom: 24cqw;
+  }
+
+  .faq {
+    gap: 0;
+  }
+
+  .faq .about-block-title {
+    margin-top: 0;
   }
 
   .project-grid {
     grid-template-columns: 1fr;
   }
 
-  .project {
+  .project,
+  .about {
     --h1: 18vw;
     padding-inline: var(--gutter);
+  }
+
+  .about-title {
+    font-size: var(--h1);
   }
 
   .os-pin {

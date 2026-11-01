@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import AboutTitle from "@/components/AboutTitle";
+import AlsoMe from "@/components/AlsoMe";
+import BitePicture from "@/components/BitePicture";
+import Faq from "@/components/Faq";
 import Footer from "@/components/Footer";
-import { alsoMe, portrait, services } from "@/lib/projects";
+import { portrait, services } from "@/lib/projects";
 
 export const metadata: Metadata = { title: "About — Liliána Török" };
 
@@ -8,35 +12,34 @@ export default function AboutPage() {
   return (
     <>
       <main className="about">
-        <h1 className="display">
-          Liliána
-          <br />
-          Török
-        </h1>
+        <AboutTitle />
 
-        <div className="about-intro">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={portrait} alt="Liliána standing in the street" />
-          <div>
+        <BitePicture className="about-picture" src={`${portrait}?scale-down-to=2048`} alt="Liliána standing in the street" />
+
+        <section className="about-block about-intro">
+          <h2 className="about-block-title">About me</h2>
+          <div className="about-intro-body">
             <p className="about-quote">
               Designing things is easy. Designing the right thing is <em>the fun part</em> — for me.
             </p>
-            <p>
-              I work as a product designer, collaborating closely with developers and stakeholders
-              to turn complex problems into simple, usable digital products — and yes, I actually
-              enjoy the process.
-            </p>
-            <p>
-              I’ve had the chance to work on genuinely good projects with great people — and that’s
-              what keeps me excited about what I do. I’ve done many roles, and I bring that
-              perspective into my design work. I’m easy to work with, ask a lot of questions, and
-              care about the end result.
-            </p>
+            <div className="about-text">
+              <p>
+                I work as a product designer, collaborating closely with developers and stakeholders
+                to turn complex problems into simple, usable digital products — and yes, I actually
+                enjoy the process.
+              </p>
+              <p>
+                I’ve had the chance to work on genuinely good projects with great people — and that’s
+                what keeps me excited about what I do. I’ve done many roles, and I bring that
+                perspective into my design work. I’m easy to work with, ask a lot of questions, and
+                care about the end result.
+              </p>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <section className="services">
-          <h2>Services</h2>
+        <section className="about-block services">
+          <h2 className="about-block-title">Services</h2>
           <ul>
             {services.map((service) => (
               <li key={service}>{service}</li>
@@ -44,17 +47,9 @@ export default function AboutPage() {
           </ul>
         </section>
 
-        <section className="also-me">
-          <h2 className="display">
-            This is <em>also</em> me
-          </h2>
-          <div className="also-me-grid">
-            {alsoMe.map((src) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={src} src={`${src}?scale-down-to=512`} alt="" />
-            ))}
-          </div>
-        </section>
+        <AlsoMe />
+
+        <Faq />
       </main>
       <Footer />
     </>

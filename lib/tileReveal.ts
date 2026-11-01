@@ -18,10 +18,26 @@ export function coverImage(src: string) {
   return image;
 }
 
+// Draws one area of the picture, cropped to the canvas the way object-fit: cover would.
+export function drawCoverArea(
+  ctx: CanvasRenderingContext2D,
+  image: HTMLImageElement,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) {
+  const { width: canvasWidth, height: canvasHeight } = ctx.canvas;
+  const scale = Math.max(canvasWidth / image.naturalWidth, canvasHeight / image.naturalHeight);
+  const offsetX = (image.naturalWidth - canvasWidth / scale) / 2;
+  const offsetY = (image.naturalHeight - canvasHeight / scale) / 2;
+  ctx.drawImage(image, offsetX + x / scale, offsetY + y / scale, width / scale, height / scale, x, y, width, height);
+}
+
 // Builds the picture out of square tiles that softly fade in, in random order. Their start times
 // follow an ease-in-out curve: a few tiles first, a rush in the middle, the last few trickling in.
 // Returns a function that stops the animation.
-export function revealInTiles(canvas: HTMLCanvasElement, image: HTMLImageElement) {
+export function revealInTiles(canvas: HTMLCanvasElement, image: HTMLImageElement, columns = TILE_COLUMNS) {
   const ctx = canvas.getContext("2d");
   const ratio = window.devicePixelRatio || 1;
   const width = Math.round(canvas.offsetWidth * ratio);
@@ -30,12 +46,7 @@ export function revealInTiles(canvas: HTMLCanvasElement, image: HTMLImageElement
   canvas.width = width;
   canvas.height = height;
 
-  // Crops the image to the canvas the way object-fit: cover would.
-  const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
-  const offsetX = (image.naturalWidth - width / scale) / 2;
-  const offsetY = (image.naturalHeight - height / scale) / 2;
-
-  const size = Math.ceil(width / TILE_COLUMNS);
+  const size = Math.ceil(width / columns);
   const tiles: { x: number; y: number; delay: number }[] = [];
   for (let y = 0; y < height; y += size) {
     for (let x = 0; x < width; x += size) {
@@ -54,17 +65,7 @@ export function revealInTiles(canvas: HTMLCanvasElement, image: HTMLImageElement
       if (progress < 1) finished = false;
       if (progress <= 0) continue;
       ctx.globalAlpha = 1 - (1 - Math.min(progress, 1)) ** 3;
-      ctx.drawImage(
-        image,
-        offsetX + tile.x / scale,
-        offsetY + tile.y / scale,
-        size / scale,
-        size / scale,
-        tile.x,
-        tile.y,
-        size,
-        size,
-      );
+      drawCoverArea(ctx, image, tile.x, tile.y, size, size);
     }
     if (!finished) frame = requestAnimationFrame(draw);
   };
