@@ -2,6 +2,9 @@ const TILE_COLUMNS = 8;
 const REVEAL_MS = 750;
 const TILE_FADE_MS = 200;
 
+// Sent by the home list when it jumps by one copy of itself to loop.
+export const LOOP_JUMP = "loopjump";
+
 export const REVEAL_TOTAL_MS = REVEAL_MS + TILE_FADE_MS;
 
 const covers = new Map<string, HTMLImageElement>();
@@ -32,6 +35,18 @@ export function drawCoverArea(
   const offsetX = (image.naturalWidth - canvasWidth / scale) / 2;
   const offsetY = (image.naturalHeight - canvasHeight / scale) / 2;
   ctx.drawImage(image, offsetX + x / scale, offsetY + y / scale, width / scale, height / scale, x, y, width, height);
+}
+
+// Draws the whole picture at once, with no build-up.
+export function drawCover(canvas: HTMLCanvasElement, image: HTMLImageElement) {
+  const ctx = canvas.getContext("2d");
+  const ratio = window.devicePixelRatio || 1;
+  const width = Math.round(canvas.offsetWidth * ratio);
+  const height = Math.round(canvas.offsetHeight * ratio);
+  if (!ctx || !width || !height) return;
+  canvas.width = width;
+  canvas.height = height;
+  drawCoverArea(ctx, image, 0, 0, width, height);
 }
 
 // Builds the picture out of square tiles that softly fade in, in random order. Their start times

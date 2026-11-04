@@ -1,25 +1,9 @@
 import type { ReactNode } from "react";
-import Crop from "@/components/Crop";
 import FactorElements from "@/components/FactorElements";
 import FactorHall from "@/components/FactorHall";
 import FactorScreen, { screen } from "@/components/FactorScreen";
-import type { CropArea } from "@/lib/projects";
 
-// Screens cut from the old case study, a single 1920 × 13039 image. Only the light mode item still
-// uses one; everything else comes from the Figma exports (see FactorScreen).
-const caseStudy = (x: number, y: number, w: number, h: number): CropArea => ({
-  src: "https://framerusercontent.com/images/Fm7s4bFpwJSDvlXdwQY0bdDOK0.gif",
-  width: 1920,
-  height: 13039,
-  x,
-  y,
-  w,
-  h,
-});
-
-const shots = {
-  light: caseStudy(140, 8060, 1650, 1080),
-};
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const monitoring = {
   before: screen("monitoring-before", 1600, 900, "Monitoring page before: one big production index ring"),
@@ -239,11 +223,13 @@ export default function FactorMes({ facts }: { facts: ReactNode }) {
               I made a light mode for every existing page, and added its colour styles to the atomic system with a
               contrast that matches the dark mode.
             </p>
-            <Crop
-              className="factor-shot"
-              area={shots.light}
-              alt="Light mode of the monitoring, kanban and planning pages"
-            />
+            {/* The two themes fade into each other, softly, the way the site itself changes theme. */}
+            <div className="factor-shot factor-lightmode" role="img" aria-label="Light mode of the monitoring, kanban and planning pages">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`${BASE}/factor-mes/lightmode-dark.webp`} width={1650} height={1080} alt="" loading="lazy" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`${BASE}/factor-mes/lightmode-light.webp`} width={1650} height={1080} alt="" loading="lazy" />
+            </div>
           </article>
         </div>
       </section>

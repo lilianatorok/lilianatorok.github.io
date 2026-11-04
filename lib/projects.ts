@@ -24,7 +24,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "kh",
-    type: "Lorem ipsum",
+    type: "Banking web & design system",
     year: "2025–2026",
     name: "K&H",
     subtitle: "Financial services company",

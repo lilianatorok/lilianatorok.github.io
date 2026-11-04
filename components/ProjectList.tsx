@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import RevealText from "@/components/RevealText";
+import TileCover from "@/components/TileCover";
 import { projects } from "@/lib/projects";
-import { coverImage, coverSrc, revealInTiles } from "@/lib/tileReveal";
+import { coverImage, coverSrc, LOOP_JUMP, revealInTiles } from "@/lib/tileReveal";
 
 const COPIES = [0, 1, 2];
 const FOLLOW_MS = 180;
@@ -52,8 +53,13 @@ export default function ProjectList() {
 
     const onScroll = () => {
       const height = copyHeight();
-      if (scroller.scrollTop < height * 0.5) scroller.scrollTop += height;
-      else if (scroller.scrollTop >= height * 1.5) scroller.scrollTop -= height;
+      let jump = 0;
+      if (scroller.scrollTop < height * 0.5) jump = height;
+      else if (scroller.scrollTop >= height * 1.5) jump = -height;
+      if (!jump) return;
+      scroller.scrollTop += jump;
+      // Tells the pictures right away, before the next frame is painted (see TileCover).
+      list.dispatchEvent(new Event(LOOP_JUMP));
     };
     scroller.addEventListener("scroll", onScroll, { passive: true });
     return () => scroller.removeEventListener("scroll", onScroll);
@@ -108,6 +114,7 @@ export default function ProjectList() {
                   onFocus={() => setActive(project.slug)}
                   onBlur={() => setActive(null)}
                 >
+                  <TileCover cover={project.cover} />
                   <RevealText className="loop-type" text={project.type} />
                   <span className="loop-name">{project.name}</span>
                   <RevealText className="loop-year" text={project.year} />

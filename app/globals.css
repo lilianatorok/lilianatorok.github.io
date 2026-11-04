@@ -475,6 +475,11 @@ em {
   z-index: 20;
 }
 
+/* The list's own pictures are for phones only (see the max-width: 800px block). */
+.loop-cover {
+  display: none;
+}
+
 .preview canvas {
   display: block;
   height: 100%;
@@ -629,20 +634,9 @@ em {
   margin-top: clamp(40px, 5vw, 96px);
 }
 
-/* While the brands change the page's scrolling is off. The slack keeps the stage pinned if momentum
-   carries the page slightly past it. */
-
-.scroller.os-locked {
-  overflow-y: hidden;
-}
-
-/* The block is as tall as its content and takes no extra room in the page. The slack only gives the
-   sticky stage room to stay put if momentum carries the page slightly past the stopping point. */
+/* The brands change on their own, in a loop; the block is an ordinary part of the page. */
 .os-pin {
-  --os-slack: 200px;
-  margin-bottom: calc(var(--os-slack) * -1);
   margin-top: clamp(40px, 5vw, 96px);
-  padding-bottom: var(--os-slack);
 }
 
 .os-pin-stage {
@@ -650,13 +644,6 @@ em {
   display: grid;
   gap: 24px;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  position: sticky;
-  top: var(--os-top); /* Set in IdeaPin: where the block stops, centered on the screen. */
-}
-
-/* With the brands done the block is an ordinary part of the page again. */
-.os-pin.is-done .os-pin-stage {
-  position: static;
 }
 
 /* The title on the left; the text, the changing picture and the brand's name stack on the right.
@@ -1086,6 +1073,252 @@ em {
   max-width: 34ch;
 }
 
+/* K&H */
+
+.kh-numbers {
+  display: grid;
+  gap: var(--lead-gap) 32px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: var(--lead-gap);
+}
+
+.kh-numbers strong {
+  display: block;
+  font-size: clamp(32px, 3.6vw, 52px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.kh-numbers p {
+  color: var(--muted);
+  margin-top: 0;
+  max-width: 26ch;
+}
+
+.kh-figure {
+  margin-top: var(--lead-gap);
+}
+
+.kh-figure figcaption {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* Widths true to each other: every screen grows by its own width, so 1440 is almost four times 375. */
+.kh-breakpoints {
+  align-items: flex-start;
+  display: flex;
+  gap: 8px;
+}
+
+.kh-breakpoints > div {
+  flex-basis: 0;
+  min-width: 0;
+}
+
+.kh-breakpoints img {
+  border: 1px solid var(--line);
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.kh-breakpoints span {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.kh-board {
+  border-radius: 8px;
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+/* One token on the left, every platform it reaches on the right; a pulse runs down each line in turn. */
+.kh-flow {
+  align-items: center;
+  display: grid;
+  gap: 0 48px;
+  grid-template-columns: auto 1fr;
+  margin-top: var(--lead-gap);
+}
+
+.kh-flow-token {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display: flex;
+  font-weight: 600;
+  gap: 10px;
+  padding: 10px 18px 10px 10px;
+}
+
+.kh-flow-token span {
+  border-radius: 50%;
+  display: block;
+  height: 28px;
+  width: 28px;
+}
+
+.kh-flow ul {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kh-flow li {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin: 0;
+  padding: 12px 16px;
+  position: relative;
+}
+
+/* The links: a stub from the token, a bracket down the list, and a stub into each platform, with a
+   dot that runs into each one in turn. */
+.kh-flow-token {
+  position: relative;
+}
+
+.kh-flow-token::after {
+  background: var(--line);
+  content: "";
+  height: 1px;
+  left: 100%;
+  position: absolute;
+  top: 50%;
+  width: 24px;
+}
+
+.kh-flow ul {
+  position: relative;
+}
+
+.kh-flow ul::before {
+  background: var(--line);
+  bottom: 22px;
+  content: "";
+  left: -24px;
+  position: absolute;
+  top: 22px;
+  width: 1px;
+}
+
+.kh-flow li::before {
+  background: var(--line);
+  content: "";
+  height: 1px;
+  left: -24px;
+  position: absolute;
+  top: 50%;
+  width: 24px;
+}
+
+.kh-flow li::after {
+  animation: kh-pulse 3.2s ease-in-out calc(var(--i) * 0.18s) infinite;
+  background: #0097db;
+  border-radius: 50%;
+  content: "";
+  height: 7px;
+  left: -27px;
+  margin-top: -3px;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  width: 7px;
+}
+
+@keyframes kh-pulse {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  40%,
+  100% {
+    opacity: 0;
+    transform: translateX(22px);
+  }
+}
+
+/* Before and after for each colour, white text on it, and how its contrast scores. */
+.kh-colours {
+  display: grid;
+  gap: 20px;
+  margin-top: var(--lead-gap);
+}
+
+.kh-colour-row {
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kh-token {
+  font-family: var(--mono, monospace);
+  font-size: 13px;
+  grid-column: 1 / -1;
+}
+
+.kh-swatch {
+  display: grid;
+  gap: 4px;
+}
+
+.kh-swatch-label,
+.kh-swatch-hex {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.kh-swatch-chip {
+  border-radius: 8px;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 600;
+  padding: 18px 16px;
+}
+
+.kh-swatch-ratio {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.kh-swatch-ratio.is-fail {
+  color: #c23b2a;
+}
+
+.kh-swatch-ratio.is-large {
+  color: #b27100;
+}
+
+.kh-swatch-ratio.is-aa,
+.kh-swatch-ratio.is-aaa {
+  color: #1d8a4e;
+}
+
+@media (max-width: 800px) {
+  .kh-breakpoints {
+    gap: 4px;
+  }
+
+  .kh-breakpoints span {
+    font-size: 10px;
+  }
+
+}
+
 /* Factor-MES */
 
 .factor ol {
@@ -1229,6 +1462,38 @@ em {
   display: block;
   margin-top: var(--lead-gap);
   width: 100%;
+}
+
+/* Dark, then light: each holds a moment, and the change is a slow crossfade. */
+.factor-lightmode {
+  display: grid;
+}
+
+.factor-lightmode img {
+  display: block;
+  grid-area: 1 / 1;
+  height: auto;
+  width: 100%;
+}
+
+.factor-lightmode img + img {
+  animation: factor-lightmode 6s ease-in-out infinite;
+}
+
+@keyframes factor-lightmode {
+  0%,
+  35% {
+    opacity: 0;
+  }
+
+  50%,
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 .factor-tablet-text {
@@ -1928,6 +2193,29 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
     padding: 0 var(--gutter);
   }
 
+  /* Phones: each project is its picture, built up from tiles, with just the name under it. */
+  .loop-cover {
+    aspect-ratio: 3 / 2;
+    display: block;
+    flex-basis: 100%;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .loop .loop-row {
+    padding-block: 0 56px;
+  }
+
+  .loop .loop-name {
+    font-size: 14vw;
+  }
+
+  .loop .loop-subtitle,
+  .loop .loop-type,
+  .loop .loop-year {
+    display: none;
+  }
+
   .loop-copy,
   .loop-copy li {
     display: block;
@@ -2096,9 +2384,9 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
 /* The menu's sheet, the hover effects and the brand switch are left out on purpose: they are short
    and only run when someone asks for them. */
 @media (prefers-reduced-motion: reduce) {
-  *:not(.sheet, .menu-slide, .loop-name, .reveal-letter, .roll-letter, .os-stage *, .footer-inner, .beres-drip *, .factor-hall *, .factor-themed img, .factor-slide-move, .factor-switch-word > *),
+  *:not(.sheet, .menu-slide, .loop-name, .reveal-letter, .roll-letter, .os-stage *, .footer-inner, .beres-drip *, .factor-hall *, .factor-themed img, .factor-slide-move, .factor-switch-word > *, .factor-lightmode img, .kh-flow li),
   *::before,
-  *::after {
+  *:not(.kh-flow li)::after {
     animation: none !important;
     transition-duration: 0.01ms !important;
     transition-delay: 0s !important;

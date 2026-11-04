@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import FactorMes from "@/components/FactorMes";
 import Footer from "@/components/Footer";
+import KH from "@/components/KH";
 import OneSystem from "@/components/OneSystem";
 import ProjectFacts from "@/components/ProjectFacts";
 import { projects } from "@/lib/projects";
@@ -33,6 +34,8 @@ export default async function ProjectPage({ params }: PageProps<"/work/[slug]">)
           <OneSystem facts={facts} />
         ) : project.slug === "factor-mes" ? (
           <FactorMes facts={facts} />
+        ) : project.slug === "kh" ? (
+          <KH facts={facts} />
         ) : (
           <>
             <h1 className="display">{project.name}</h1>
