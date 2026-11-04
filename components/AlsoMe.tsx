@@ -40,7 +40,7 @@ export default function AlsoMe() {
     // Trails behind the scroll and eases to a stop, so the columns keep gliding after the wheel stops.
     const glide = (now: number) => {
       const target = scrolled();
-      rolled += (target - rolled) * (1 - Math.exp((lastTime - now) / GLIDE_MS));
+      rolled += (target - rolled) * (1 - Math.exp(-Math.max(now - lastTime, 0) / GLIDE_MS));
       lastTime = now;
       if (Math.abs(target - rolled) < 0.1) {
         rolled = target;

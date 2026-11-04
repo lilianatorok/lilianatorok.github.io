@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import Header from "@/components/Header";
 import RollText from "@/components/RollText";
+import { smoothWheel } from "@/lib/smoothWheel";
 
 const links = [
   { href: "/", label: "Work" },
@@ -39,6 +40,11 @@ export default function Shell({ children }: { children: ReactNode }) {
   // Lets the arrow keys and space scroll the page without clicking into it first.
   useEffect(() => {
     scrollerRef.current?.focus({ preventScroll: true });
+  }, [pathname]);
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    return scroller ? smoothWheel(scroller) : undefined;
   }, [pathname]);
 
   return (

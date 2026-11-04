@@ -1,4 +1,6 @@
 const CDN = "https://framerusercontent.com/images";
+// GitHub Pages serves the site from a sub-path, which plain image paths have to include.
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export type Section = { title: string; body: string; points?: string[] };
 
@@ -12,9 +14,10 @@ export type Project = {
   subtitle: string;
   cover: string;
   images: ProjectImage[];
+  // Shown under the title of every project, in this order.
   role?: string;
   timeline?: string;
-  challenges?: string;
+  team?: string;
   sections?: Section[];
 };
 
@@ -22,13 +25,13 @@ export const projects: Project[] = [
   {
     slug: "kh",
     type: "Lorem ipsum",
-    year: "2025",
+    year: "2025–2026",
     name: "K&H",
-    subtitle: "Bank group",
+    subtitle: "Financial services company",
     cover: `${CDN}/yfILBw04ZGvgE2VWBmoQt2I0U.png`,
     role: "Product designer",
-    timeline: "March 2025 – present",
-    challenges: "High volume of projects, small team, tight deadlines",
+    team: "Hungarian team",
+    timeline: "2025–2026",
     images: [
       { src: `${CDN}/RKQhL3I0VRozyZIoX57ECKNAg4s.png`, width: 1560, height: 1041, alt: "K&H project screens, part 1" },
       { src: `${CDN}/3LIjAJsNV70M3oRsuQKqiffi0.png`, width: 1560, height: 1041, alt: "K&H project screens, part 2" },
@@ -84,20 +87,41 @@ export const projects: Project[] = [
   {
     slug: "system",
     type: "Multi-brand CMS",
-    year: "2024",
+    year: "2023–2024",
     name: "One System",
-    subtitle: "Four brands, one CMS",
-    cover: `${CDN}/wTJCohDqICYhg8cL2iwlkPn2LQ.png`,
+    subtitle: "Four+ brands, one CMS",
+    // One column per brand, built from its real pieces: hero, card and button on shared rows.
+    cover: `${BASE}/one-system/cover-layers.webp`,
+    role: "Product designer",
+    team: "1 project owner, 2 backend developers, 1 frontend developer, 1 designer",
+    timeline: "2023–2024",
     images: [],
   },
   {
-    slug: "factor",
-    type: "Dolor sit",
-    year: "2024",
+    slug: "vois",
+    type: "Product design",
+    year: "2026–present",
+    name: "VOIS",
+    subtitle: "Telecommunications company",
+    // A plain placeholder until there are pictures to show.
+    cover: `${BASE}/vois/cover.webp`,
+    role: "Product designer",
+    timeline: "2026–present",
+    team: "International team",
+    images: [],
+  },
+  {
+    slug: "factor-mes",
+    type: "Industrial dashboard",
+    year: "2021–2023",
     name: "Factor-MES",
-    subtitle: "Case study",
-    cover: `${CDN}/gBifZZX8JH7uu1UWzj6TGXj7xds.png`,
-    images: [{ src: `${CDN}/Fm7s4bFpwJSDvlXdwQY0bdDOK0.gif`, width: 1920, height: 13039, alt: "Factor-MES case study" }],
+    subtitle: "Industrial Manager",
+    // The login screen's mesh, the machine drawing and the plant map, as in the old case study.
+    cover: `${BASE}/factor-mes/cover.webp`,
+    role: "Product designer",
+    team: "1 project owner, 2 project managers, 1 lead developer, 1 designer",
+    timeline: "2021–2023",
+    images: [],
   },
 ];
 
@@ -114,198 +138,180 @@ export type CropArea = {
 
 export type BrandVariables = {
   bg: string;
-  surface: string;
   fg: string;
-  accent: string;
-  onAccent: string;
-  headerBg: string;
-  headerFg: string;
+  primary: string;
+  secondary: string;
   radius: string;
-  heading: string;
-  body: string;
   headingName: string;
   bodyName: string;
 };
+
+export type SpecialImage = { src: string; size: [number, number]; alt: string };
 
 export type Brand = {
   id: string;
   name: string;
   kind: string;
   cover: string;
-  logo: string;
-  nav: string[];
-  hero: { title: string; text: string; action: string; image: CropArea };
-  cards: { title: string; meta: string; price: string; image: CropArea }[];
-  cardAction: string;
+  mockup: Mockup;
   variables: BrandVariables;
   structure: { list: string; detail: string; card: string };
-  added: { title: string; text: string; image: CropArea };
+  // What only this brand needed, built on top of the shared system. `layout` says how its images sit.
+  special: { title: string; text: string; images: SpecialImage[]; layout: "single" | "drip" | "side" | "component" };
 };
 
-const maklary = { src: `${CDN}/Qiu2VquYrLTkD5zTLMoWnjvzT0.png`, width: 1920, height: 27100 };
-const beres = { src: `${CDN}/cDn0alDAWrp3hPFqrNVS90SBx8.gif`, width: 1920, height: 15393 };
-const total = { src: `${CDN}/rNIhX2eqI1cfIDwlpbifg0wbGYo.png`, width: 1920, height: 21900 };
-const szamos = { src: `${CDN}/GcEDGgTWP7QbxxSlepF412dR7G0.png`, width: 1920, height: 25840 };
+
+// One element of a brand's site, cut from its Figma page together with its shadow. `size` is the
+// whole cut; `box` is where the element itself sits inside it, which the layout lines up.
+export type MockupPiece = { src: string; size: [number, number]; box: [number, number, number, number] };
+
+export type Mockup = {
+  header: MockupPiece;
+  hero: MockupPiece;
+  cards: [MockupPiece, MockupPiece];
+  buttons: [MockupPiece, MockupPiece];
+  form: MockupPiece;
+  // Which part of the hero stays when it is cropped to its slot, as an object-position.
+  heroFocus?: string;
+};
+
+const piece = (brand: string, name: string, size: [number, number], box?: [number, number, number, number]): MockupPiece => ({
+  src: `${BASE}/one-system/${brand}/${name}.webp`,
+  size,
+  box: box ?? [0, 0, size[0], size[1]],
+});
 
 export const brands: Brand[] = [
   {
     id: "maklary",
     name: "Makláry",
     kind: "Fine art gallery",
-    cover: `${CDN}/8Ydu0FPqHW0iyPT6LQ6YUAdEHKs.png`,
-    logo: "Kálmán Makláry Fine Arts",
-    nav: ["Artists", "Exhibitions", "Shop", "News"],
-    hero: {
-      title: "Modern & contemporary gallery",
-      text: "Artists of the Post-War School of Paris.",
-      action: "See exhibitions",
-      image: { ...maklary, x: 590, y: 792, w: 750, h: 500 },
+    cover: `${BASE}/one-system/maklary/cover.webp`,
+    mockup: {
+      header: piece("maklary", "header", [1524, 134], [6, 4, 1512, 122]),
+      hero: piece("maklary", "hero", [1296, 730]),
+      cards: [piece("maklary", "card1", [326, 508], [10, 62, 306, 432]), piece("maklary", "card2", [326, 364], [10, 62, 306, 288])],
+      buttons: [piece("maklary", "button1", [109, 33]), piece("maklary", "button2", [121, 33])],
+      form: piece("maklary", "form", [1316, 665], [10, 6, 1296, 645]),
     },
-    cards: [
-      { title: "Reigl Judit 100", meta: "Exhibition", price: "2024", image: { ...maklary, x: 1224, y: 9090, w: 432, h: 324 } },
-      { title: "Judit Reigl", meta: "Artist", price: "Paris", image: { ...maklary, x: 682, y: 14784, w: 278, h: 360 } },
-      { title: "Abstract work", meta: "Artwork", price: "On request", image: { ...maklary, x: 206, y: 10584, w: 210, h: 150 } },
-    ],
-    cardAction: "More",
     variables: {
       bg: "#ffffff",
-      surface: "#eae9e9",
-      fg: "#212121",
-      accent: "#e30613",
-      onAccent: "#ffffff",
-      headerBg: "#ffffff",
-      headerFg: "#212121",
-      radius: "0px",
-      heading: "var(--font-cinzel)",
-      body: "var(--font-crimson)",
+      fg: "#212529",
+      primary: "#000000",
+      secondary: "#e30613",
+      radius: "4px",
       headingName: "Trajan Pro",
       bodyName: "Crimson Text",
     },
     structure: { list: "Artists, exhibitions, news", detail: "Artwork, exhibition", card: "Art card" },
-    added: {
+    special: {
       title: "One card, many jobs",
       text: "A single main card holds every element. Switching elements off turns it into an artist, artwork, exhibition, news or book card.",
-      image: { ...maklary, x: 168, y: 10480, w: 1560, h: 640 },
+      // The first image is the main card; the rest are made from it.
+      images: [
+        { src: `${BASE}/one-system/maklary/special-card-main.webp`, size: [390, 852], alt: "The main Makláry card, with every element switched on" },
+        { src: `${BASE}/one-system/maklary/special-card-1.webp`, size: [306, 478], alt: "Exhibition card" },
+        { src: `${BASE}/one-system/maklary/special-card-2.webp`, size: [306, 466], alt: "Artist card" },
+        { src: `${BASE}/one-system/maklary/special-card-3.webp`, size: [306, 500], alt: "Book card" },
+        { src: `${BASE}/one-system/maklary/special-card-4.webp`, size: [306, 448], alt: "Exhibition card with a photo" },
+        { src: `${BASE}/one-system/maklary/special-card-5.webp`, size: [306, 241], alt: "News card" },
+      ],
+      layout: "component",
     },
   },
   {
     id: "beres",
     name: "Béres",
     kind: "Vineyards and winery",
-    cover: `${CDN}/wnyGECh3Fz5lGlTK3uYki9TEBY.png`,
-    logo: "Béres Tokaj",
-    nav: ["Borok", "A birtok", "Család", "Kapcsolat"],
-    hero: {
-      title: "Minden cseppje Béres",
-      text: "Tokaji borok a családi birtokról.",
-      action: "Borok megtekintése",
-      image: { ...beres, x: 96, y: 7368, w: 816, h: 456 },
+    cover: `${BASE}/one-system/beres/cover.webp`,
+    mockup: {
+      header: piece("beres", "header", [1562, 150], [25, 25, 1512, 100]),
+      hero: piece("beres", "hero", [1512, 771]),
+      cards: [piece("beres", "card1", [510, 620], [50, 50, 410, 520]), piece("beres", "card2", [510, 717], [50, 50, 410, 617])],
+      buttons: [piece("beres", "button1", [223, 43]), piece("beres", "button2", [249, 51])],
+      form: piece("beres", "form", [1316, 677], [10, 6, 1296, 657]),
     },
-    cards: [
-      { title: "Tokaji Aszú", meta: "6 puttonyos", price: "8 000 Ft", image: { ...beres, x: 1290, y: 5832, w: 160, h: 648, contain: true } },
-      { title: "Lőcse Furmint", meta: "Száraz", price: "24 000 Ft", image: { ...beres, x: 150, y: 6620, w: 1170, h: 370, contain: true } },
-      { title: "Hárslevelű", meta: "Édes", price: "5 400 Ft", image: { ...beres, x: 830, y: 125, w: 110, h: 355, contain: true } },
-    ],
-    cardAction: "Kosárba",
     variables: {
-      bg: "#fffdf7",
-      surface: "#f4ecd8",
-      fg: "#1d1a14",
-      accent: "#d2b26a",
-      onAccent: "#1d1a14",
-      headerBg: "#fffdf7",
-      headerFg: "#1d1a14",
-      radius: "2px",
-      heading: "var(--font-playfair)",
-      body: "var(--font-roboto)",
+      bg: "#ffffff",
+      fg: "#212529",
+      primary: "#d4bb76",
+      secondary: "#91763e",
+      radius: "30px",
       headingName: "Playfair Display",
       bodyName: "Roboto",
     },
     structure: { list: "Wines", detail: "Wine", card: "Product card" },
-    added: {
-      title: "A card for the best wines",
-      text: "Next to the default product card came a featured one for seasonal wines, and the product page got tabs for the wine details.",
-      image: { ...beres, x: 72, y: 5808, w: 1728, h: 1248 },
+    special: {
+      title: "Every drop counts",
+      text: "Offers, stories and events are built from alternating content blocks, joined by the brand’s own gold line and a drop that falls into place.",
+      images: [
+        { src: `${BASE}/one-system/beres/special-story.webp`, size: [1717, 847], alt: "Béres content block about the 20-year-old estate" },
+        { src: `${BASE}/one-system/beres/special-banner.webp`, size: [1920, 635], alt: "Béres dark banner about the Lőcse vineyard" },
+      ],
+      layout: "drip",
     },
   },
   {
-    id: "total",
-    name: "Totál-Épker",
-    kind: "Building materials webshop",
-    cover: `${CDN}/wTJCohDqICYhg8cL2iwlkPn2LQ.png`,
-    logo: "totálEPKER",
-    nav: ["Termékek", "Hírek", "Ajánlat", "Kapcsolat"],
-    hero: {
-      title: "Szakértelem minden felületre",
-      text: "Festékek és építőanyagok egy helyen.",
-      action: "Termékek",
-      image: { ...total, x: 984, y: 6384, w: 864, h: 840 },
+    id: "aroom",
+    name: "AROOM",
+    kind: "Escape rooms",
+    cover: `${BASE}/one-system/aroom/cover.webp`,
+    mockup: {
+      header: piece("aroom", "header", [1524, 92], [6, 4, 1512, 80]),
+      hero: piece("aroom", "hero", [1512, 600]),
+      cards: [piece("aroom", "room1", [600, 557]), piece("aroom", "card2", [336, 378])],
+      buttons: [piece("aroom", "button1", [145, 41]), piece("aroom", "button2", [165, 41])],
+      form: piece("aroom", "form", [1296, 706]),
     },
-    cards: [
-      { title: "Héra Gold falfesték", meta: "Beltéri, 3 kiszerelés", price: "12 320 Ft", image: { ...total, x: 144, y: 19488, w: 456, h: 336 } },
-      { title: "Dulux falfesték", meta: "Beltéri, 10 szín", price: "9 500 Ft", image: { ...total, x: 840, y: 12985, w: 264, h: 239 } },
-      { title: "Héra Gold 10 L", meta: "Beltéri", price: "9 500 Ft", image: { ...total, x: 840, y: 12360, w: 240, h: 216 } },
-    ],
-    cardAction: "Kosárba",
     variables: {
-      bg: "#f6f4ea",
-      surface: "#ffffff",
-      fg: "#003b21",
-      accent: "#ede937",
-      onAccent: "#003b21",
-      headerBg: "#003b21",
-      headerFg: "#ffffff",
-      radius: "12px",
-      heading: "var(--font-poppins)",
-      body: "var(--font-poppins)",
-      headingName: "Poppins",
-      bodyName: "Poppins",
+      bg: "#ffffff",
+      fg: "#1b2745",
+      primary: "#1b2745",
+      secondary: "#eabc00",
+      radius: "6px",
+      headingName: "Oxanium",
+      bodyName: "Roboto",
     },
-    structure: { list: "Paints and materials", detail: "Product", card: "Product card" },
-    added: {
-      title: "Variations in the list",
-      text: "A new product card lets customers add any mix of colours and sizes to the cart straight from the listing, without opening the detail page.",
-      image: { ...total, x: 120, y: 20760, w: 1656, h: 640 },
+    structure: { list: "Rooms, bookings", detail: "Room", card: "Room card" },
+    special: {
+      title: "Booking at a glance",
+      text: "Every room’s free slots on one screen, with discounts and unlocks marked, and filters for families and team sizes.",
+      images: [{ src: `${BASE}/one-system/aroom/special-booking.webp`, size: [1296, 841], alt: "AROOM booking view with each room’s time slots" }],
+      layout: "single",
     },
   },
   {
     id: "szamos",
     name: "Szamos",
     kind: "Chocolate school",
-    cover: `${CDN}/t0Pff8K4jD70Mv2iBSh20Hxhw.png`,
-    logo: "Szamos Csokoládé Iskola",
-    nav: ["Kurzusok", "Programok", "Ajándékkártya", "Kapcsolat"],
-    hero: {
-      title: "Indul a tavaszi csokoládé műhely",
-      text: "Készítsd el a saját bonbonjaidat a mestercukrászokkal.",
-      action: "Tavaszi kurzusok",
-      image: { ...szamos, x: 200, y: 4008, w: 1650, h: 1100 },
+    cover: `${BASE}/one-system/szamos/cover.webp`,
+    mockup: {
+      header: piece("szamos", "header", [1524, 78], [6, 4, 1512, 66]),
+      hero: piece("szamos", "hero", [1296, 447]),
+      cards: [piece("szamos", "card1", [416, 448]), piece("szamos", "card2", [416, 448])],
+      buttons: [piece("szamos", "button1", [150, 33]), piece("szamos", "button2", [172, 33])],
+      form: piece("szamos", "form", [1316, 596], [10, 6, 1296, 576]),
+      heroFocus: "right",
     },
-    cards: [
-      { title: "Macaron", meta: "Kurzus", price: "Tavasz", image: { ...szamos, x: 854, y: 15796, w: 120, h: 90 } },
-      { title: "Le croissant", meta: "Kurzus", price: "Tavasz", image: { ...szamos, x: 1190, y: 15796, w: 120, h: 90 } },
-      { title: "Cukrászkurzus", meta: "Kurzus", price: "Tavasz", image: { ...szamos, x: 1460, y: 15796, w: 120, h: 90 } },
-    ],
-    cardAction: "Részletek",
     variables: {
-      bg: "#fbf6f7",
-      surface: "#ffffff",
-      fg: "#4a1a1e",
-      accent: "#c2204f",
-      onAccent: "#ffffff",
-      headerBg: "#ffffff",
-      headerFg: "#4a1a1e",
-      radius: "6px",
-      heading: "var(--font-merriweather)",
-      body: "var(--font-raleway)",
-      headingName: "Merriweather",
-      bodyName: "Raleway",
+      bg: "#ffffff",
+      fg: "#212529",
+      primary: "#bf244d",
+      secondary: "#49181b",
+      radius: "2px",
+      headingName: "Raleway",
+      bodyName: "Open Sans",
     },
     structure: { list: "Courses, programmes", detail: "Course", card: "Course card" },
-    added: {
+    special: {
       title: "Programmes, not products",
       text: "Courses, team building and gift cards moved onto the same list and detail templates, and the whole site was checked against WCAG.",
-      image: { ...szamos, x: 840, y: 15480, w: 816, h: 1056 },
+      images: [
+        { src: `${BASE}/one-system/szamos/special-form.webp`, size: [856, 1311], alt: "Szamos team building request form with a date picker" },
+        { src: `${BASE}/one-system/szamos/special-giftcard.webp`, size: [1296, 450], alt: "Szamos gift card block" },
+        { src: `${BASE}/one-system/szamos/special-newsletter.webp`, size: [1296, 486], alt: "Szamos newsletter sign-up" },
+      ],
+      layout: "side",
     },
   },
 ];
@@ -314,7 +320,6 @@ export const contact = {
   email: "torokliliana.gd@gmail.com",
   phone: "+36 (20) 441 0941",
   phoneHref: "tel:+36204410941",
-  linkedin: "https://www.linkedin.com/in/liliána-török-4a4140225",
 };
 
 export const portrait = `${CDN}/IkhRzmjkiXgkgd5qEhTtHJU5XPs.png`;

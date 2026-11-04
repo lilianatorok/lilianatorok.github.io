@@ -1,20 +1,24 @@
 :root {
-  --bg: #f4f1ea;
+  --bg: #f8f6f1;
+  --footer-bg: #eeebe3;
   --fg: #141311;
   --muted: #6d6a62;
-  --ghost: #d9d5ca;
-  --line: #d3cfc4;
-  --accent: #ff4a1c;
-  --on-accent: #141311;
+  --ghost: #dedad0;
+  --line: #d8d4ca;
   --gutter: clamp(16px, 2vw, 32px);
-  --font: var(--font-geist-mono), ui-monospace, monospace;
-  --display: var(--font-anton), Impact, sans-serif;
-  --label: var(--font-bebas), Impact, sans-serif;
+  /* Inside a section's right column: between groups (a list, a set of pictures, a sub-part) and
+     between a line of text and what it introduces. */
+  --group-gap: clamp(32px, 3vw, 48px);
+  --lead-gap: 24px;
+  --lead: 22px; /* The one step up from the 17px body text. */
+  --font: var(--font-inter-tight), system-ui, sans-serif;
+  --display: var(--font-anton), Impact, sans-serif; /* Only for the H1-sized titles. */
   color-scheme: light;
 }
 
 :root[data-theme="dark"] {
   --bg: #121210;
+  --footer-bg: #090908;
   --fg: #f4f1ea;
   --muted: #9b978c;
   --ghost: #2f2e2a;
@@ -42,7 +46,7 @@ body {
   background: #000;
   color: var(--fg);
   font-family: var(--font);
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -81,6 +85,12 @@ body {
   outline: none;
   overflow-x: hidden;
   overflow-y: auto;
+  /* The pages place their own scrolling (the One System block, the looping home list), so the
+     browser mustn't nudge it when something above changes size. */
+  overflow-anchor: none;
+  /* Every page keeps room for the scrollbar, even one too short to scroll or while the One System
+     block switches scrolling off, so the content is always exactly as wide. */
+  scrollbar-gutter: stable;
 }
 
 .scroller:has(.home) {
@@ -119,7 +129,7 @@ em {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--fg);
   outline-offset: 3px;
 }
 
@@ -141,8 +151,14 @@ em {
   text-transform: uppercase;
 }
 
+/* No colour accent: the emphasised words keep the full colour, the rest goes grey. */
+
+.display:has(em) {
+  color: var(--muted);
+}
+
 .display em {
-  color: var(--accent);
+  color: var(--fg);
   font-weight: 400;
 }
 
@@ -154,7 +170,7 @@ em {
 
 .status::before {
   animation: pulse 2.2s ease-in-out infinite;
-  background: var(--accent);
+  background: var(--fg);
   border-radius: 50%;
   content: "";
   height: 8px;
@@ -184,8 +200,8 @@ em {
 }
 
 .wordmark {
-  font-family: var(--label);
-  font-size: 24px;
+  font-size: 18px;
+  font-weight: 600;
   line-height: 1;
   text-decoration: none;
 }
@@ -210,7 +226,7 @@ em {
 
 .theme-switch button {
   border-radius: 99px;
-  font-size: 13px;
+  font-size: 14px;
   padding: 2px 10px;
   text-transform: capitalize;
 }
@@ -221,8 +237,8 @@ em {
 }
 
 .menu-toggle {
-  font-family: var(--label);
-  font-size: 22px;
+  font-size: 16px;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -250,8 +266,8 @@ em {
 }
 
 .menu-close {
-  font-family: var(--label);
-  font-size: 22px;
+  font-size: 16px;
+  font-weight: 600;
   line-height: 1;
   position: absolute;
   right: var(--gutter);
@@ -310,7 +326,8 @@ em {
 }
 
 /* The big links travel much further in the same time, so they get longer to look equally calm. */
-.menu a {
+.menu a,
+.footer-cta {
   --roll-duration: 1s;
   --roll-stagger: 40ms;
 }
@@ -323,7 +340,7 @@ em {
 
 .menu-note {
   bottom: var(--gutter);
-  font-size: 13px;
+  font-size: 14px;
   max-width: 60vw;
   position: absolute;
   right: var(--gutter);
@@ -335,18 +352,20 @@ em {
   bottom: var(--gutter);
   display: flex;
   flex-direction: column;
-  font-size: 13px;
   gap: 14px;
   left: var(--gutter);
   line-height: 1.4;
   position: fixed;
-  width: 12vw;
-  min-width: 160px;
+  width: clamp(200px, 16vw, 280px); /* Wide enough for the 17px body text. */
   z-index: 10;
 }
 
+.intro p:has(em) {
+  color: var(--muted);
+}
+
 .intro em {
-  color: var(--accent);
+  color: var(--fg);
 }
 
 /* The middle column is as wide as the widest name, and every link fills exactly that column, so
@@ -380,8 +399,8 @@ em {
 .loop-type,
 .loop-year {
   color: var(--fg);
-  font-family: var(--label);
-  font-size: clamp(18px, 1.8vw, 30px);
+  font-size: clamp(14px, 1.4vw, 22px);
+  font-weight: 600;
   line-height: 1.05;
   pointer-events: none;
   position: absolute;
@@ -398,6 +417,7 @@ em {
   overflow: hidden;
   padding-top: 0.2em;
   vertical-align: top;
+  white-space: nowrap; /* Lines break between words, never inside one. */
 }
 
 .reveal-word:last-child {
@@ -417,7 +437,7 @@ em {
 
 .loop-type {
   left: 14.5%;
-  max-width: 8.5vw;
+  max-width: 11vw;
 }
 
 .loop-year {
@@ -487,7 +507,9 @@ em {
    padding keeps it clear of the theme switch. */
 
 .project,
-.about {
+.about,
+.contact,
+.footer-inner {
   /* Grows with the screen, a touch under the template's size, but always fits the two-line title. */
   --h1: min(max(144px, 10vw), 228px, calc((100vw - 176px) / 5));
   margin-inline: auto;
@@ -495,15 +517,16 @@ em {
   padding-inline: 88px;
 }
 
-.project .display {
+.project .display,
+.contact .display {
   font-size: var(--h1);
   line-height: 1;
 }
 
 .project-subtitle {
-  font-family: var(--label);
-  font-size: clamp(26px, 3.2vw, 48px);
-  line-height: 1.1;
+  font-size: clamp(22px, 2.4vw, 36px);
+  font-weight: 600;
+  line-height: 1.2;
   margin-top: 16px;
 }
 
@@ -518,7 +541,7 @@ em {
 
 .facts dt {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 4px;
 }
 
@@ -527,39 +550,34 @@ em {
   width: 100%;
 }
 
-.case-section {
-  border-top: 1px solid var(--line);
-  display: grid;
-  gap: 16px 24px;
-  grid-template-columns: repeat(12, 1fr);
-  margin-top: clamp(48px, 7vw, 112px);
-  padding-top: 16px;
-}
-
-.case-section h2 {
-  font-family: var(--label);
-  font-size: clamp(30px, 3.2vw, 48px);
-  font-weight: 400;
-  grid-column: 1 / span 5;
-  line-height: 1.1;
-}
-
 .case-section > div {
-  font-size: clamp(14px, 1.1vw, 17px);
-  grid-column: 6 / -1;
   line-height: 1.6;
+}
+
+/* Text and lists in a block. */
+.case-section p,
+.case-section > div > ul {
   max-width: 62ch;
 }
 
 .case-section ul {
   color: var(--muted);
-  font-size: 0.86em;
-  margin-top: 20px;
+  margin-top: var(--lead-gap);
 }
 
 .case-section li {
   border-top: 1px solid var(--line);
   padding-block: 10px;
+}
+
+/* A lead in full colour, the rest of the line grey. */
+.case-learnings strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.case-learnings li {
+  padding-block: 14px;
 }
 
 .project-grid {
@@ -588,7 +606,7 @@ em {
 
 .next-project span {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .next-project strong {
@@ -602,7 +620,7 @@ em {
 }
 
 .next-project:hover strong {
-  color: var(--accent);
+  color: var(--muted);
 }
 
 /* One System */
@@ -611,71 +629,74 @@ em {
   margin-top: clamp(40px, 5vw, 96px);
 }
 
-/* While the brands change the page's scrolling is off, and the scrollbar's space stays reserved so
-   nothing shifts. The slack keeps the stage pinned if momentum carries the page slightly past it. */
-
-.scroller:has(.os-pin) {
-  scrollbar-gutter: stable;
-}
+/* While the brands change the page's scrolling is off. The slack keeps the stage pinned if momentum
+   carries the page slightly past it. */
 
 .scroller.os-locked {
   overflow-y: hidden;
 }
 
+/* The block is as tall as its content and takes no extra room in the page. The slack only gives the
+   sticky stage room to stay put if momentum carries the page slightly past the stopping point. */
 .os-pin {
-  --os-slack: 200px; /* Keep in step with SLACK_PX in IdeaPin. */
-  height: calc(100svh + var(--os-slack));
-  margin-top: min(24px, calc(340px - 50svh)); /* Pulls up the empty top of the centered stage. */
+  --os-slack: 200px;
+  margin-bottom: calc(var(--os-slack) * -1);
+  margin-top: clamp(40px, 5vw, 96px);
+  padding-bottom: var(--os-slack);
 }
 
 .os-pin-stage {
-  align-content: center;
   align-items: start;
   display: grid;
-  gap: var(--gutter) clamp(32px, 4vw, 72px);
-  grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr);
-  height: 100svh;
-  padding-block: 72px var(--gutter);
+  gap: 24px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   position: sticky;
-  top: 0;
+  top: var(--os-top); /* Set in IdeaPin: where the block stops, centered on the screen. */
 }
 
-.os-pin-text h2 {
-  font-family: var(--label);
-  font-size: clamp(30px, 3.2vw, 48px);
-  font-weight: 400;
-  line-height: 1.1;
-  margin-bottom: 12px;
+/* With the brands done the block is an ordinary part of the page again. */
+.os-pin.is-done .os-pin-stage {
+  position: static;
 }
 
-.os-pin-text p {
-  font-size: clamp(14px, 1.1vw, 17px);
+/* The title on the left; the text, the changing picture and the brand's name stack on the right.
+   The whole stage is pinned already, so the title stays level with the text. */
+.os-pin .os-pin-stage > h2 {
+  position: static;
+}
+
+.os-pin-body {
+  grid-column: 6 / -1;
+}
+
+.os-pin-body p {
   line-height: 1.6;
-  max-width: 44ch;
+  max-width: 62ch;
 }
 
 .os-pin-image {
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 1920 / 1400; /* The brand covers are all this size. */
   display: block;
+  margin-top: clamp(24px, 2.5vw, 40px);
   width: 100%;
 }
 
 .os-pin-current {
-  margin-top: clamp(24px, 2.5vw, 40px);
-  min-height: 72px;
+  margin-top: 16px;
+  min-height: 64px;
 }
 
 .os-pin-name {
   display: block;
-  font-family: var(--label);
-  font-size: clamp(26px, 2.6vw, 36px);
-  line-height: 1.1;
+  font-size: clamp(22px, 2vw, 28px);
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .os-pin-kind {
   color: var(--muted);
   display: block;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .os-pin-current .reveal-word {
@@ -697,30 +718,40 @@ em {
 }
 
 .os-split {
-  display: grid;
-  gap: var(--gutter);
-  grid-template-columns: repeat(2, 1fr);
-  margin-top: clamp(32px, 4vw, 64px);
+  margin-top: clamp(72px, 11vw, 200px); /* The same as the gap below it, above .os-switcher. */
+}
+
+/* The two lists stack under their shared title. */
+.os-split > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--group-gap);
 }
 
 .os-split h3 {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   margin-bottom: 12px;
 }
 
-.os-split li {
+/* The big list, as on One System: short items in caps, one per line. */
+.os-split li,
+.case-section .case-big-list li {
   border-top: 1px solid var(--line);
-  font-family: var(--display);
-  font-size: clamp(26px, 4vw, 56px);
+  font-size: clamp(20px, 2.6vw, 36px);
+  font-weight: 600;
   line-height: 1.25;
   padding-block: 6px;
   text-transform: uppercase;
 }
 
-.os-split > div:last-child li {
-  color: var(--accent);
+.case-section .case-big-list {
+  color: var(--fg);
+}
+
+.os-split > div > div:first-child li {
+  color: var(--muted);
 }
 
 /* Everything inside the stage reads the brand's variables, and only those change on a switch. */
@@ -733,13 +764,14 @@ em {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 24px;
-  margin-bottom: 16px;
+  margin-bottom: clamp(32px, 4vw, 64px);
 }
 
 .os-tabs button {
   color: var(--ghost);
-  font-family: var(--display);
-  font-size: clamp(28px, 5vw, 64px);
+  font-size: clamp(22px, 3.2vw, 44px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
   line-height: 1.15;
   text-transform: uppercase;
   transition: color 0.25s ease;
@@ -759,124 +791,68 @@ em {
   grid-template-columns: minmax(0, 1fr) 200px;
 }
 
-.os-stage * {
-  transition:
-    background-color 0.5s ease,
-    border-color 0.5s ease,
-    border-radius 0.5s ease,
-    color 0.5s ease;
+/* The brand's site, put together from its pieces. Everything is measured on a 1512-wide canvas
+   (--canvas), so one unit (--u) is that much of the stage's width. */
+.os-mock-frame {
+  container-type: inline-size;
+  min-width: 0;
 }
 
-.os-demo {
-  background: var(--b-bg);
-  color: var(--b-fg);
-  font-family: var(--b-body);
-  font-size: 15px;
-  line-height: 1.4;
-  overflow: hidden;
+.os-mock {
+  --u: calc(100cqw / var(--canvas));
+  --shift: 0;
+  height: calc(var(--h) * var(--u));
+  position: relative;
 }
 
-.os-demo-header {
-  align-items: center;
-  background: var(--b-header-bg);
-  color: var(--b-header-fg);
-  display: flex;
-  gap: 24px;
-  justify-content: space-between;
-  padding: 14px clamp(16px, 2vw, 32px);
+.os-piece {
+  animation: os-piece-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--order) * 60ms) both;
+  left: calc(var(--x) * var(--u));
+  position: absolute;
+  top: calc(var(--y) * var(--u));
+  /* While the stage crosses the screen a piece of depth 1 drifts 70 canvas pixels. */
+  translate: 0 calc(var(--depth) * var(--shift) * 70 * var(--u) * -1);
+  width: calc(var(--w) * var(--u));
 }
 
-.os-demo-header strong {
-  font-family: var(--b-heading);
-  white-space: nowrap;
-}
-
-.os-demo-header ul {
-  display: flex;
-  gap: clamp(12px, 1.6vw, 24px);
-}
-
-.os-demo-hero {
-  align-items: center;
-  display: grid;
-  gap: clamp(16px, 2vw, 32px);
-  grid-template-columns: 2fr 3fr;
-  padding: clamp(16px, 2vw, 32px);
-}
-
-.os-demo-hero h3 {
-  font-family: var(--b-heading);
-  font-size: clamp(24px, 2.8vw, 38px);
-  font-weight: inherit;
-  line-height: 1.15;
-}
-
-.os-demo-hero p {
-  margin-block: 10px 18px;
-}
-
-.os-demo-button {
-  background: var(--b-accent);
-  border-radius: var(--b-radius);
-  color: var(--b-on-accent);
-  display: inline-block;
-  padding: 7px 14px;
-}
-
-.os-demo-image {
-  animation: os-fade 0.5s ease both;
-  border-radius: var(--b-radius);
+.os-piece img {
   display: block;
-  width: 100%;
+  max-width: none;
+  pointer-events: none;
+  position: absolute;
+  user-select: none;
 }
 
-.os-demo-hero .os-demo-image {
-  aspect-ratio: 3 / 2;
+/* Stacking: the hero at the back, then the cards, the form and the buttons on top. */
+.os-piece-header {
+  z-index: 3;
 }
 
-@keyframes os-fade {
+.os-piece-hero {
+  z-index: 1;
+}
+
+.os-piece-card {
+  z-index: 2;
+}
+
+.os-piece-card + .os-piece-card {
+  z-index: 1;
+}
+
+.os-piece-form {
+  z-index: 4;
+}
+
+.os-piece-button {
+  z-index: 5;
+}
+
+@keyframes os-piece-in {
   from {
     opacity: 0;
+    transform: translateY(calc(40 * var(--u)));
   }
-}
-
-.os-demo-cards {
-  display: grid;
-  gap: clamp(12px, 1.4vw, 20px);
-  grid-template-columns: repeat(3, 1fr);
-  padding: 0 clamp(16px, 2vw, 32px) clamp(16px, 2vw, 32px);
-}
-
-.os-demo-cards article {
-  background: var(--b-surface);
-  border-radius: var(--b-radius);
-  overflow: hidden;
-}
-
-.os-demo-cards .os-demo-image {
-  aspect-ratio: 4 / 3;
-  background: var(--b-bg);
-  border-radius: 0;
-}
-
-.os-demo-cards article > div {
-  padding: 12px;
-}
-
-.os-demo-cards span:first-child {
-  font-size: 0.85em;
-  opacity: 0.7;
-}
-
-.os-demo-cards h4 {
-  font-family: var(--b-heading);
-  font-size: 1.2em;
-  font-weight: inherit;
-  line-height: 1.2;
-}
-
-.os-demo-cards p {
-  margin-block: 4px 12px;
 }
 
 .os-side {
@@ -886,10 +862,9 @@ em {
 }
 
 .os-side h3 {
-  font-family: var(--label);
-  font-size: clamp(20px, 1.8vw, 26px);
-  font-weight: 400;
-  line-height: 1.1;
+  font-size: clamp(17px, 1.4vw, 20px);
+  font-weight: 600;
+  line-height: 1.2;
   margin-bottom: 10px;
 }
 
@@ -900,13 +875,13 @@ em {
 
 .os-tokens dt {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .os-tokens dd {
   align-items: center;
   display: flex;
-  font-size: 13px;
+  font-size: 14px;
   gap: 8px;
 }
 
@@ -916,63 +891,603 @@ em {
   width: 14px;
 }
 
-.os-added {
-  display: grid;
-  gap: clamp(32px, 4vw, 64px) var(--gutter);
-  grid-template-columns: repeat(2, 1fr);
-  margin-top: clamp(32px, 4vw, 64px);
+/* Items stacked in a block's right column: a small label, a title, a line of text and the pictures.
+   One System's brand extras and Factor-MES's examples use the same. */
+.os-new,
+.case-item {
+  margin-top: var(--group-gap);
 }
 
-.os-added-image {
-  aspect-ratio: 16 / 10;
-  background: var(--ghost);
-  display: block;
-  margin-bottom: 14px;
-  width: 100%;
+.case-item:first-child {
+  margin-top: 0;
 }
 
-.os-added span {
+.os-new > span,
+.case-item > span {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 
-.os-added h3 {
-  font-family: var(--label);
-  font-size: clamp(26px, 2.8vw, 42px);
-  font-weight: 400;
-  line-height: 1.1;
+.os-new h3,
+.case-item h3 {
+  font-size: clamp(22px, 2.2vw, 32px);
+  font-weight: 600;
+  line-height: 1.2;
   margin-bottom: 8px;
 }
 
-.os-added p {
-  font-size: clamp(14px, 1.1vw, 17px);
-  line-height: 1.6;
-  max-width: 52ch;
+.os-new-images {
+  margin-top: var(--lead-gap);
+}
+
+/* The pieces bring their own shadows and corners, cut out of their Figma pages. */
+.os-new-images img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+/* Béres: a gold line runs through both blocks, fading out at either end, with an empty drop on it in
+   the middle of the dark banner. The full drop falls along the line into it. Heights come from the
+   pictures’ proportions (story 1717 × 847, banner 1920 × 635). */
+.os-new-drip {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--lead-gap);
+  position: relative;
+}
+
+.beres-drip {
+  --story: calc(100cqw * 847 / 1717);
+  --banner: calc(100cqw * 635 / 1920);
+  --target: calc(var(--story) + var(--lead-gap) + var(--banner) / 2);
+  --drop-w: 24px;
+  --drop-h: calc(var(--drop-w) * 54 / 40);
+  --from: calc(var(--story) * 0.25 - var(--target));
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+/* The line stops just short of the empty drop on both sides. */
+.beres-drip-line {
+  left: calc(50% - 0.5px);
+  position: absolute;
+  width: 1px;
+}
+
+.beres-drip-above {
+  background: linear-gradient(transparent, #bb9e55 30%, #d8bf7d);
+  height: calc(var(--target) - var(--drop-h) / 2 - 6px);
+  top: 0;
+}
+
+.beres-drip-below {
+  background: linear-gradient(#d8bf7d, #bb9e55 60%, transparent);
+  bottom: 0;
+  top: calc(var(--target) + var(--drop-h) / 2 + 6px);
+}
+
+.beres-drip svg {
+  left: 50%;
+  position: absolute;
+  top: calc(var(--target) - var(--drop-h) / 2);
+  translate: -50% 0;
+  width: var(--drop-w);
+}
+
+.beres-drip-empty {
+  fill: none;
+  stroke: #d4bb76;
+  stroke-width: 1.5;
+}
+
+.beres-drip-drop {
+  opacity: 0;
+}
+
+.is-dropping .beres-drip-drop {
+  animation: beres-fall 1.8s both;
+}
+
+/* It forms in the upper block, falls faster and faster, lands in the empty drop and settles there. */
+@keyframes beres-fall {
+  0% {
+    animation-timing-function: ease-out;
+    opacity: 0;
+    transform: translateY(var(--from)) scale(0.3);
+  }
+
+  20% {
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+    opacity: 1;
+    transform: translateY(var(--from));
+  }
+
+  78% {
+    animation-timing-function: ease-out;
+    transform: scale(1.12, 0.86);
+  }
+
+  88% {
+    animation-timing-function: ease-in-out;
+    transform: scale(0.96, 1.05);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Makláry: the main component, and the cards made from it by hiding elements, grouped in a dashed box. */
+.os-new-component {
+  align-items: start;
+  display: grid;
+  gap: clamp(16px, 2vw, 32px);
+  grid-template-columns: 4fr 7fr;
+}
+
+.os-new-component figcaption {
+  color: #9747ff;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.os-new-variants > div {
+  border: 1.5px dashed #9747ff;
+  border-radius: 6px;
+  columns: 2;
+  column-gap: 12px;
+  padding: 12px;
+}
+
+.os-new-variants img {
+  break-inside: avoid;
+  margin-bottom: 12px;
+}
+
+/* A tall piece on the left, two wide ones stacked beside it. */
+.os-new-side {
+  align-items: start;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 2fr 3fr;
+}
+
+.os-new-side img:first-child {
+  grid-row: span 2;
 }
 
 .os-numbers {
-  display: grid;
-  gap: var(--gutter);
-  grid-template-columns: repeat(2, 1fr);
-  margin-top: clamp(32px, 4vw, 64px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--lead-gap);
+  margin-top: var(--lead-gap);
 }
 
 .os-numbers strong {
   display: block;
-  font-family: var(--display);
-  font-size: clamp(48px, 8vw, 112px);
-  font-weight: 400;
+  font-size: clamp(32px, 3.6vw, 52px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
   line-height: 1.15;
   text-transform: uppercase;
 }
 
-.os-numbers > div:first-child strong {
-  color: var(--accent);
+.os-numbers > div:last-child strong {
+  color: var(--muted);
 }
 
 .os-numbers p {
-  font-size: clamp(14px, 1.1vw, 17px);
   max-width: 34ch;
+}
+
+/* Factor-MES */
+
+.factor ol {
+  list-style: none;
+}
+
+.factor .facts {
+  margin-top: clamp(40px, 5vw, 96px);
+}
+
+/* The plant map: the dashboard's dark slate buildings, one lit up blue at a time, its label purple.
+   The slate is taken from the original picture, a shade per face, with the edges behind the glass
+   showing through faintly. */
+.factor-hall {
+  --hall-accent: #5b4fd6;
+  display: block;
+  overflow: visible;
+  height: auto;
+  margin-top: var(--lead-gap);
+  width: 100%;
+}
+
+:root[data-theme="dark"] .factor-hall {
+  --hall-accent: #9a94f2;
+}
+
+.factor-hall-top,
+.factor-hall-left,
+.factor-hall-right {
+  stroke: #4c4e60;
+  stroke-width: 0.8;
+}
+
+/* Light mode: the same buildings in pale grey, so they sit lightly on the page. */
+.factor-hall-top {
+  fill: #e4e3e0;
+}
+
+.factor-hall-left {
+  fill: #d6d5d2;
+}
+
+.factor-hall-right {
+  fill: #c9c8c5;
+}
+
+.factor-hall-top,
+.factor-hall-left,
+.factor-hall-right {
+  stroke: #bdbcb8;
+}
+
+.factor-hall-hidden {
+  fill: none;
+  stroke: #000000;
+  stroke-opacity: 0.08;
+  stroke-width: 0.8;
+}
+
+/* Dark mode: the dashboard's own slate, taken from the original picture. */
+:root[data-theme="dark"] .factor-hall-top {
+  fill: #363846;
+}
+
+:root[data-theme="dark"] .factor-hall-left {
+  fill: #2e2f3a;
+}
+
+:root[data-theme="dark"] .factor-hall-right {
+  fill: #262832;
+}
+
+:root[data-theme="dark"] :is(.factor-hall-top, .factor-hall-left, .factor-hall-right) {
+  stroke: #4c4e60;
+}
+
+:root[data-theme="dark"] .factor-hall-hidden {
+  stroke: #ffffff;
+}
+
+.factor-hall-lit {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.factor-hall-box.is-active .factor-hall-lit {
+  opacity: 1;
+}
+
+.factor-hall-label polyline {
+  fill: none;
+  stroke: var(--muted);
+  stroke-opacity: 0.7;
+  stroke-width: 1.2;
+  transition: stroke 0.6s ease, stroke-opacity 0.6s ease;
+}
+
+.factor-hall-label circle {
+  fill: var(--fg);
+}
+
+.factor-hall-label text {
+  fill: var(--muted);
+  font-family: var(--font);
+  font-size: 21px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition: fill 0.6s ease;
+}
+
+.factor-hall-label.is-active text {
+  fill: var(--hall-accent);
+  font-weight: 700;
+}
+
+.factor-hall-label.is-active polyline {
+  stroke: var(--hall-accent);
+  stroke-opacity: 1;
+}
+
+.case-section p + p {
+  margin-top: 16px;
+}
+
+.case-section ul + p {
+  margin-top: var(--lead-gap);
+}
+
+.case-list-title {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: var(--group-gap);
+}
+
+.case-list-title + ul {
+  margin-top: 8px;
+}
+
+.factor-shot {
+  display: block;
+  margin-top: var(--lead-gap);
+  width: 100%;
+}
+
+.factor-tablet-text {
+  margin-top: var(--lead-gap);
+}
+
+/* The 70 px next to the card it was tested on; the text gets the room, the card stays small. */
+.factor-result {
+  align-items: center;
+  display: grid;
+  gap: clamp(24px, 4vw, 64px);
+  grid-template-columns: minmax(0, 1fr) min(36%, 200px);
+  margin-top: var(--group-gap);
+}
+
+.factor-result strong {
+  display: block;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.factor-result p {
+  max-width: 34ch;
+}
+
+/* Every Figma export comes in a dark and a light version, stacked; the page's theme shows one, and
+   switching the theme fades the dashboard over with it. */
+.factor-themed {
+  display: grid;
+}
+
+.factor-themed img {
+  display: block;
+  grid-area: 1 / 1;
+  height: auto;
+  transition: opacity 0.6s ease;
+  width: 100%;
+}
+
+.factor-themed .is-dark,
+:root[data-theme="dark"] .factor-themed .is-light {
+  opacity: 0;
+}
+
+:root[data-theme="dark"] .factor-themed .is-dark {
+  opacity: 1;
+}
+
+/* Screens stay square; the kanban card, a component, keeps a small rounding. */
+.factor-card img {
+  border-radius: 8px;
+}
+
+.factor-card {
+  width: 100%;
+}
+
+/* The dashboard's elements on a board: each one placed by x, y and width on a 1000-wide grid. */
+.factor-elements {
+  aspect-ratio: 1000 / var(--board-h);
+  container-type: inline-size;
+  margin-top: var(--lead-gap);
+  position: relative;
+}
+
+.factor-element {
+  left: calc(var(--x) / 10 * 1%);
+  position: absolute;
+  top: calc(var(--y) / 10 * 1cqw);
+  width: calc(var(--w) / 10 * 1%);
+}
+
+.factor-element img {
+  filter: drop-shadow(0 8px 18px rgb(0 0 0 / 0.07));
+}
+
+:root[data-theme="dark"] .factor-element img {
+  filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.3));
+}
+
+/* Before above after, in the column. */
+.factor-compare {
+  margin-top: var(--lead-gap);
+}
+
+.factor-compare figcaption,
+.factor-devices figcaption,
+.factor-header-compare figcaption {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* Numbered pins on the after screen, explained right under it. */
+.factor-annotated {
+  position: relative;
+}
+
+.factor-pin,
+.factor-notes span {
+  align-items: center;
+  background: var(--fg);
+  border-radius: 50%;
+  color: var(--bg);
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 700;
+  height: 26px;
+  justify-content: center;
+  width: 26px;
+}
+
+.factor-pin {
+  box-shadow: 0 0 0 4px rgb(255 255 255 / 0.25);
+  position: absolute;
+  translate: -50% -50%;
+}
+
+.factor-pin-widgets {
+  left: 57%;
+  top: 15.5%;
+}
+
+.factor-pin-efficiency {
+  left: 94%;
+  top: 56%;
+}
+
+.factor-notes {
+  color: var(--fg);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 14px;
+}
+
+.factor-notes li {
+  border: 0;
+  padding: 0;
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+/* Desktop, then the two phones beside the portrait tablet, then the landscape tablet. The row's
+   columns follow the screens' proportions, so they come out the same height. */
+.factor-devices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lead-gap);
+  margin-top: var(--lead-gap);
+}
+
+.factor-devices-row {
+  align-items: start;
+  display: grid;
+  gap: 12px;
+  /* Two phones (375 × 667 each, with their 12 px gap) beside one portrait tablet (768 × 1024). */
+  grid-template-columns: 1.16fr 0.75fr;
+}
+
+.factor-phones {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* The mobile header: before, and after, where the view changer switches on and off by itself. */
+.factor-header-compare {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: var(--lead-gap);
+}
+
+/* The header item: the page with the view changer slides over the page without it. Header 85 pt and
+   view changer 50 pt of the phone's 667. The header stays on top, so the row slides in from under it. */
+.factor-slide {
+  display: grid;
+  overflow: hidden;
+}
+
+.factor-slide > * {
+  grid-area: 1 / 1;
+}
+
+.factor-slide-move {
+  animation: factor-slide 5s infinite;
+  clip-path: inset(12.744% 0 0 0);
+}
+
+.factor-slide-head {
+  clip-path: inset(0 0 87.256% 0);
+}
+
+@keyframes factor-slide {
+  0%,
+  40%,
+  100% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateY(0);
+  }
+
+  50%,
+  90% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateY(-7.496%);
+  }
+}
+
+/* The "off" screen and word fade in over the "on" ones, and back. */
+.factor-switch-word > :last-child {
+  animation: factor-switch 5s ease-in-out infinite;
+}
+
+.factor-switch-word > :first-child {
+  animation: factor-switch-out 5s ease-in-out infinite;
+}
+
+.factor-switch-word {
+  display: inline-grid;
+}
+
+.factor-switch-word > * {
+  grid-area: 1 / 1;
+}
+
+@keyframes factor-switch-out {
+  0%,
+  40% {
+    opacity: 1;
+  }
+
+  50%,
+  90% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes factor-switch {
+  0%,
+  40% {
+    opacity: 0;
+  }
+
+  50%,
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 /* About */
@@ -1018,26 +1533,41 @@ em {
 }
 
 /* The same share of the column as the template's Studio picture. */
+/* The quote sits in the room the picture leaves on its right, level with its bottom edge. */
+.about-hero {
+  align-items: end;
+  display: grid;
+  gap: clamp(24px, 3vw, 48px);
+  grid-template-columns: 74fr 26fr;
+  margin-top: clamp(40px, 6vw, 88px);
+}
+
 .about-picture {
   aspect-ratio: 2782 / 1634;
   display: block;
-  margin-top: clamp(40px, 6vw, 88px);
-  width: 74%;
+  width: 100%;
 }
 
-.about-block {
+/* Every page is built from these blocks: the title on the left, the content on the right. Wide
+   pieces like the One System tabs or the Factor-MES board leave the grid and take the full width. */
+.about-block,
+.case-section {
   display: grid;
   gap: 24px;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   margin-top: clamp(64px, 9vw, 140px);
 }
 
-.about-block > :last-child {
+.about-block > :last-child,
+.case-section > :last-child {
   grid-column: 6 / -1;
 }
 
 /* Rides along on the left while its block scrolls past. */
-.about-block-title {
+.about-block-title,
+.case-section > h2,
+.os-pin-stage > h2,
+.section-title {
   align-self: start;
   font-size: 14px;
   font-weight: 700;
@@ -1060,25 +1590,26 @@ em {
 .about-text {
   display: flex;
   flex-direction: column;
-  font-size: clamp(14px, 1.1vw, 17px);
   gap: 20px;
   line-height: 1.6;
   max-width: 62ch;
 }
 
 .about-quote {
-  font-family: var(--display);
-  font-size: clamp(36px, 3.6vw, 64px);
-  line-height: 1.15;
-  text-transform: uppercase;
+  color: var(--muted);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .about-quote em {
-  color: var(--accent);
-  font-weight: 400;
+  color: var(--fg);
+  font-weight: inherit;
 }
 
-.about-cv {
+/* The quiet link style: underlined small caps, the letters roll on hover. */
+.text-link {
   align-items: center;
   align-self: flex-start;
   display: inline-flex;
@@ -1089,11 +1620,11 @@ em {
   text-transform: uppercase;
 }
 
-.about-cv-label {
+.text-link-label {
   border-bottom: 1px solid currentColor;
 }
 
-.about-cv svg {
+.text-link svg {
   fill: none;
   height: 16px;
   stroke: currentColor;
@@ -1103,10 +1634,11 @@ em {
 
 .services li {
   border-bottom: 1px solid var(--line);
-  font-family: var(--display);
-  font-size: clamp(32px, 4.4vw, 76px);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   line-height: 1.25;
-  padding-block: 6px;
+  padding-block: 8px;
   text-transform: uppercase;
 }
 
@@ -1175,11 +1707,11 @@ em {
   color: inherit;
   cursor: pointer;
   display: flex;
-  font-family: var(--label);
-  font-size: clamp(22px, 1.8vw, 26px);
+  font-size: 20px;
+  font-weight: 600;
   gap: 24px;
   justify-content: space-between;
-  line-height: 1.2;
+  line-height: 1.35;
   padding-block: clamp(28px, 3.3vw, 48px);
   text-align: left;
   transition: padding-bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1230,13 +1762,11 @@ h3:has([aria-expanded="true"]) + .faq-answer {
 }
 
 .faq-answer p {
-  font-size: 14px;
   line-height: 1.6;
   max-width: 620px;
   min-height: 0;
   overflow: hidden;
   padding-right: 38px;
-  text-transform: uppercase;
   transition: padding-bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -1254,16 +1784,18 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
   padding-bottom: var(--gutter);
 }
 
-.contact-details,
 .footer-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 12px clamp(24px, 4vw, 64px);
 }
 
-.contact-details {
-  font-size: clamp(14px, 1.2vw, 18px);
-  margin-top: 64px;
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  list-style: none;
+  margin-top: clamp(32px, 4vw, 56px);
 }
 
 .copy-email {
@@ -1274,31 +1806,65 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
 
 .copy-email button {
   color: var(--muted);
-  font-size: 0.8em;
+  font-size: 14px;
   min-width: 3.5em;
   text-align: left;
   text-decoration: underline;
 }
 
 .copy-email button:hover {
-  color: var(--accent);
+  color: var(--fg);
 }
 
 /* Footer */
 
+/* A full screen that opens up from under the page: while it scrolls in, its content holds still
+   against the bottom of the screen, so the footer seems to grow until it fills the screen. */
+
 .footer {
+  background: var(--footer-bg);
+  height: 100svh;
   margin-top: clamp(80px, 11vw, 180px);
-  padding: 0 var(--gutter) var(--gutter);
+  overflow: clip; /* Not hidden: that would make it the scroll container view() follows. */
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: var(--gutter);
+  padding-top: clamp(48px, 6vw, 96px);
+}
+
+/* Nothing moves on screen here, the page only slides off the footer, so it stays on with reduced
+   motion too. */
+@supports (animation-timeline: view()) {
+  .footer-inner {
+    animation: footer-reveal linear both;
+    animation-range: entry;
+    animation-timeline: view();
+  }
+}
+
+@keyframes footer-reveal {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: none;
+  }
 }
 
 .footer-lead {
-  font-family: var(--label);
-  font-size: clamp(24px, 2.6vw, 40px);
-  line-height: 1.15;
+  color: var(--muted);
+  font-size: var(--lead);
+  line-height: 1.4;
+  margin-top: auto;
 }
 
 .footer-lead em {
-  color: var(--accent);
+  color: var(--fg);
   font-weight: 400;
 }
 
@@ -1309,26 +1875,35 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
   line-height: 1.15;
   margin-top: 8px;
   text-decoration: none;
-  text-transform: uppercase;
-  transition: color 0.25s ease;
-}
-
-.footer-cta:hover {
-  color: var(--accent);
 }
 
 .footer-meta {
   border-top: 1px solid var(--line);
-  font-size: 13px;
-  margin-top: clamp(32px, 4vw, 56px);
+  margin-top: auto;
   padding-top: 16px;
 }
 
 /* Phones and small tablets */
 
 @media (max-width: 800px) {
+  /* The menu has the screen to itself; only the page's right corner stays in view. */
   .sheet.is-open {
-    transform: translate(-72vw, -2vh) rotate(13deg);
+    transform: translate(-98vw, -2vh) rotate(13deg);
+  }
+
+  /* A band of page colour behind the header, so Menu and the switch stay readable over whatever
+     scrolls under them. It sits under the header, which keeps its difference blending. */
+  .sheet-content::before {
+    background: var(--bg);
+    content: "";
+    height: calc(var(--gutter) * 2 + 25px);
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: background-color 0.35s ease;
+    z-index: 49;
   }
 
   /* The names fill the whole width on phones, so the switch stays in the header. */
@@ -1342,7 +1917,6 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
     background: var(--bg);
     border-top: 1px solid var(--line);
     bottom: 0;
-    font-size: 13px;
     gap: 6px;
     left: 0;
     padding: 12px var(--gutter);
@@ -1378,9 +1952,9 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
   .loop-subtitle {
     display: block;
     flex-basis: 100%;
-    font-family: var(--label);
-    font-size: 20px;
-    line-height: 1.1;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
     order: 1;
     padding-top: 2px;
   }
@@ -1390,7 +1964,7 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
   .loop-year {
     color: var(--muted);
     font-family: var(--font);
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.3;
     max-width: none;
     order: 2;
@@ -1411,19 +1985,22 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
     grid-template-columns: 1fr;
   }
 
-  .case-section h2,
-  .case-section > div,
+  .case-section > h2,
+  .case-section > :last-child,
   .about-block > :last-child,
-  .about-block-title {
+  .about-block-title,
+  .os-pin-stage > *,
+  .os-pin-body {
     grid-column: 1 / -1;
   }
 
-  .about-block-title {
+  .about-block-title,
+  .case-section > h2 {
     position: static;
   }
 
-  .about-picture {
-    width: 100%;
+  .about-hero {
+    grid-template-columns: 1fr;
   }
 
   /* Edge to edge on a phone. The columns are wider than the screen, so the outer two roll past half
@@ -1458,7 +2035,9 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
   }
 
   .project,
-  .about {
+  .about,
+  .contact,
+  .footer-inner {
     --h1: 18vw;
     padding-inline: var(--gutter);
   }
@@ -1467,12 +2046,7 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
     font-size: var(--h1);
   }
 
-  .os-pin {
-    margin-top: 24px;
-  }
-
   .os-pin-stage {
-    align-content: center;
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -1483,14 +2057,34 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
   }
 
   .os-stage,
-  .os-demo-hero,
-  .os-demo-cards,
-  .os-added,
-  .os-numbers {
+  .os-new-side,
+  .os-new-component {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .os-demo-header ul {
+  /* On a phone the pieces simply line up: header, hero, the two cards side by side, the form. */
+  .os-mock {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    height: auto;
+  }
+
+  .os-piece {
+    left: auto;
+    position: relative;
+    top: auto;
+    translate: none;
+    width: auto;
+  }
+
+  .os-piece-header,
+  .os-piece-hero,
+  .os-piece-form {
+    grid-column: 1 / -1;
+  }
+
+  .os-piece-button {
     display: none;
   }
 
@@ -1502,7 +2096,7 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
 /* The menu's sheet, the hover effects and the brand switch are left out on purpose: they are short
    and only run when someone asks for them. */
 @media (prefers-reduced-motion: reduce) {
-  *:not(.sheet, .menu-slide, .loop-name, .reveal-letter, .roll-letter, .os-stage *),
+  *:not(.sheet, .menu-slide, .loop-name, .reveal-letter, .roll-letter, .os-stage *, .footer-inner, .beres-drip *, .factor-hall *, .factor-themed img, .factor-slide-move, .factor-switch-word > *),
   *::before,
   *::after {
     animation: none !important;

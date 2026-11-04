@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import FactorMes from "@/components/FactorMes";
 import Footer from "@/components/Footer";
 import OneSystem from "@/components/OneSystem";
+import ProjectFacts from "@/components/ProjectFacts";
 import { projects } from "@/lib/projects";
 
 export function generateStaticParams() {
@@ -22,32 +24,21 @@ export default async function ProjectPage({ params }: PageProps<"/work/[slug]">)
 
   const project = projects[index];
   const next = projects[(index + 1) % projects.length];
-  const facts = [
-    { label: "My role", value: project.role },
-    { label: "Timeline", value: project.timeline },
-    { label: "Challenges", value: project.challenges },
-  ].filter((fact) => fact.value);
+  const facts = <ProjectFacts project={project} />;
 
   return (
     <>
       <main className="project">
         {project.slug === "system" ? (
-          <OneSystem />
+          <OneSystem facts={facts} />
+        ) : project.slug === "factor-mes" ? (
+          <FactorMes facts={facts} />
         ) : (
           <>
             <h1 className="display">{project.name}</h1>
             <p className="project-subtitle">{project.subtitle}</p>
 
-            {facts.length > 0 && (
-              <dl className="facts">
-                {facts.map((fact) => (
-                  <div key={fact.label}>
-                    <dt>{fact.label}</dt>
-                    <dd>{fact.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            )}
+            {facts}
 
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {project.sections && <img className="project-cover" src={project.cover} alt="" />}
