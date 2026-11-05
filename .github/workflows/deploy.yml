@@ -26,9 +26,11 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      # A repo named <owner>.github.io is served from the root of that address; any other repo
+      # from /<repo-name>.
       - run: npm run build
         env:
-          BASE_PATH: /${{ github.event.repository.name }}
+          BASE_PATH: ${{ endsWith(github.event.repository.name, '.github.io') && '' || format('/{0}', github.event.repository.name) }}
       # Without this, Pages would run the site through Jekyll and drop the _next folder.
       - run: touch out/.nojekyll
       - name: Publish to gh-pages
