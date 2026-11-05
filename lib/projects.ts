@@ -28,7 +28,7 @@ export const projects: Project[] = [
     year: "2025–2026",
     name: "K&H",
     subtitle: "Financial services company",
-    cover: `${BASE}/kh/cover.webp`,
+    cover: `${BASE}/kh/cover-amp.webp`,
     role: "Product designer",
     team: "Plenty of stakeholders, plenty of POs, not quite as many designers",
     timeline: "2025–2026",
