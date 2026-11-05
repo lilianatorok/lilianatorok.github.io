@@ -14,16 +14,19 @@ const mobile: [number, number][] = [
   [750, 136], [750, 1520], [750, 2386], [750, 1864], [750, 1400], [750, 2816], [750, 1750], [750, 704],
 ];
 
-// One continuous run down the page that never stops: each leg goes to a point (a section's top; 8 is
-// the bottom) in its own time, so the speed changes along the way. Quick past the offer to the
-// calculator, slow through it, an easy glide to the end, a breath there, and back to the top.
+// One even run down the page at a constant speed, then the last stretch slows into the bottom (its
+// curve starts at that same speed, so there's no jolt), a breath there, and a quicker trip back up.
+const EVEN_MS = 11000;
+const EVEN_SHARE = 0.85; // of the way down
+const SETTLE_MS = 4000;
+const HOLD_MS = 1000;
+const BACK_MS = 1800;
+const settleSlope = (EVEN_SHARE * SETTLE_MS) / ((1 - EVEN_SHARE) * EVEN_MS);
 const legs = [
-  { to: 2, ms: 3200 },
-  { to: 3, ms: 900 },
-  { to: 3.9, ms: 3400 },
-  { to: 8, ms: 6500 },
-  { to: 8, ms: 900 },
-  { to: 0, ms: 1800 },
+  { share: EVEN_SHARE, ms: EVEN_MS, easing: "linear" },
+  { share: 1, ms: SETTLE_MS, easing: `cubic-bezier(0.2, ${Math.min(0.2 * settleSlope, 1).toFixed(3)}, 0.6, 1)` },
+  { share: 1, ms: HOLD_MS, easing: "linear" },
+  { share: 0, ms: BACK_MS, easing: "ease-in-out" },
 ];
 const LOAD_MS = 1100;
 
@@ -51,8 +54,8 @@ function Device({ kind, sizes }: { kind: "d" | "m"; sizes: [number, number][] })
   );
 }
 
-// The two screens load once, built up from tiles; then the page scrolls through on its own, quicker
-// in some places and slower in others, and starts again from the top. Only while it's on screen.
+// The two screens load once, built up from tiles; then the page scrolls through on its own at an even
+// pace, slows into the end, and goes back to the top. Only while it's on screen.
 export default function KHPages() {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -92,16 +95,15 @@ export default function KHPages() {
       const total = legs.reduce((sum, leg) => sum + leg.ms, 0);
       runs = devices.map(({ page, screen }) => {
         let at = 0;
-        const frames: Keyframe[] = [{ transform: "translateY(0px)", offset: 0, easing: "ease-in" }];
-        legs.forEach(({ to, ms }, index) => {
+        // A keyframe's easing shapes the leg that starts at it, so each leg's easing sits on the frame before.
+        const frames: Keyframe[] = [{ transform: "translateY(0px)", offset: 0, easing: legs[0].easing }];
+        const end = offsetOf(page, screen, 8);
+        legs.forEach(({ share, ms }, index) => {
           at += ms;
-          // A keyframe's easing shapes the leg after it: linear in the middle so it never stops, eased
-          // only into the end of the page and on the way back up.
-          const eased = index >= legs.length - 4;
           frames.push({
-            transform: `translateY(${-offsetOf(page, screen, to)}px)`,
+            transform: `translateY(${-end * share}px)`,
             offset: at / total,
-            easing: eased ? "ease-in-out" : "linear",
+            easing: legs[index + 1]?.easing ?? "linear",
           });
         });
         return page.animate(frames, { duration: total, iterations: Infinity });

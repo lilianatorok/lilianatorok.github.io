@@ -1,17 +1,8 @@
 import type { CSSProperties, ReactNode } from "react";
+import KHBreakpoints from "@/components/KHBreakpoints";
 import KHPages from "@/components/KHPages";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-
-// One calculator section at every breakpoint, drawn at the same scale so the widths compare.
-const breakpoints = [
-  { width: 1440, size: [864, 1235] },
-  { width: 1200, size: [720, 1234] },
-  { width: 1024, size: [614, 1232] },
-  { width: 768, size: [461, 1055] },
-  { width: 576, size: [346, 1187] },
-  { width: 375, size: [225, 1205] },
-];
 
 const numbers = [
   ["20+", "projects, several at a time"],
@@ -108,22 +99,8 @@ export default function KH({ facts }: { facts: ReactNode }) {
             website needed a completely different structure.
           </p>
           <figure className="kh-figure">
-            <figcaption>One calculator section at all six breakpoints</figcaption>
-            <div className="kh-breakpoints">
-              {breakpoints.map(({ width, size }) => (
-                <div key={width} style={{ flexGrow: size[0] }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`${BASE}/kh/bp-${width}.webp`}
-                    width={size[0]}
-                    height={size[1]}
-                    alt={`Credit card calculator at ${width} pixels wide`}
-                    loading="lazy"
-                  />
-                  <span>{width}</span>
-                </div>
-              ))}
-            </div>
+            <figcaption>One calculator, six breakpoints: drag the window’s edge, or watch it resize</figcaption>
+            <KHBreakpoints />
           </figure>
         </div>
       </section>

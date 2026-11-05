@@ -1106,30 +1106,128 @@ em {
   margin-bottom: 8px;
 }
 
-/* Widths true to each other: every screen grows by its own width, so 1440 is almost four times 375. */
-.kh-breakpoints {
-  align-items: flex-start;
+/* A window that resizes between 1440 and 375 pixels; its layout switches at each breakpoint, and the
+   ruler above marks the breakpoints, lighting the one in use. */
+.kh-bp {
+  user-select: none;
+}
+
+.kh-bp-ruler {
+  border-bottom: 1px solid var(--line);
+  height: 26px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.kh-bp-ruler span {
+  border-right: 1px solid var(--line);
+  bottom: -1px;
+  color: var(--muted);
+  font-size: 11px;
+  height: 14px;
+  line-height: 1;
+  padding-right: 5px;
+  position: absolute;
+  transform: translateX(-100%);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.kh-bp-ruler span.is-on {
+  border-color: #1E60B6;
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* The stage keeps the window height fixed while only its width changes, like a real browser. */
+.kh-bp-stage {
+  aspect-ratio: 1440 / 940;
+  contain: layout paint; /* Its resizing never makes the rest of the page lay out again. */
+  position: relative;
+}
+
+.kh-bp-window {
   display: flex;
-  gap: 8px;
-}
-
-.kh-breakpoints > div {
-  flex-basis: 0;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 40px rgb(13 42 80 / 0.12);
   min-width: 0;
+  overflow: hidden;
+  position: relative;
 }
 
-.kh-breakpoints img {
-  border: 1px solid var(--line);
-  display: block;
+.kh-bp-bar {
+  align-items: center;
+  background: #eef3f8;
+  display: flex;
+  gap: 5px;
+  padding: 8px 10px;
+}
+
+.kh-bp-bar i {
+  background: #c9d4e0;
+  border-radius: 50%;
+  flex: none;
+  height: 7px;
+  width: 7px;
+}
+
+.kh-bp-bar span {
+  background: #fff;
+  border-radius: 999px;
+  color: #45658f;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+  padding: 2px 10px;
+  white-space: nowrap;
+}
+
+/* The screen shows the top of the page; every layout is loaded, only the one in use is shown. */
+.kh-bp-screen {
+  background: #f4f9fd;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.kh-bp-screen img {
+  opacity: 0;
   height: auto;
+  left: 0;
+  position: absolute;
+  top: 0;
   width: 100%;
 }
 
-.kh-breakpoints span {
-  color: var(--muted);
-  display: block;
-  font-size: 12px;
-  margin-top: 6px;
+.kh-bp-screen img.is-on {
+  opacity: 1;
+}
+
+.kh-bp-handle {
+  background: transparent;
+  border: 0;
+  cursor: ew-resize;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  touch-action: none;
+  width: 22px;
+}
+
+.kh-bp-handle::after {
+  background: #1E60B6;
+  border-radius: 3px;
+  content: "";
+  height: 44px;
+  opacity: 0.7;
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
 }
 
 /* The loan page building itself: a desktop window, with a phone over its bottom right corner. */
@@ -1407,14 +1505,6 @@ em {
 }
 
 @media (max-width: 800px) {
-  .kh-breakpoints {
-    gap: 4px;
-  }
-
-  .kh-breakpoints span {
-    font-size: 10px;
-  }
-
 }
 
 /* Factor-MES */
