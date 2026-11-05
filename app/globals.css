@@ -492,7 +492,7 @@ em {
 /* The names start right of the intro's column. Each row reacts from the start of its name to 80% of
    the screen width, so the picture follows the cursor a little past the name, but not everywhere. */
 .works {
-  padding: 13vh 0 var(--gutter);
+  padding: 11vh 0 var(--gutter);
 }
 
 .works-row {
@@ -508,13 +508,25 @@ em {
   color: var(--fg);
 }
 
+/* As wide as 10vw allows, but never so tall that the list runs off the screen: the four work projects
+   and the smaller side one fit in the height left under the header. */
 .works-name {
   font-family: var(--display);
-  font-size: 10vw;
-  line-height: 1.08;
+  font-size: min(8.6vw, 13vh);
+  line-height: 1.22;
   text-transform: uppercase;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   white-space: nowrap;
+}
+
+/* The side projects: half the size, and set clearly apart from the work, so the smaller name reads as
+   a choice rather than a mistake. */
+.works-list .is-minor {
+  margin-top: 7vh;
+}
+
+.works-list .is-minor .works-name {
+  font-size: min(4.3vw, 6.5vh);
 }
 
 .works.has-active .works-row.is-active .works-name {
@@ -1198,6 +1210,52 @@ em {
   color: var(--muted);
   font-size: 14px;
   margin-bottom: 8px;
+}
+
+/* Side Quests: the pictures, two to a row, a wide one across both. */
+.side-shots {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: var(--lead-gap);
+}
+
+.side-shots img,
+.side-shots video {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+/* The video carries a mark in its bottom right corner (at about 90% across). Zoomed in from the left
+   edge, the frame loses that last strip and the mark with it. */
+.side-video {
+  overflow: hidden;
+}
+
+.side-video video {
+  transform: scale(1.12);
+  transform-origin: 0 50%;
+}
+
+/* The video's row and the pictures above it sit as close as the pictures do to each other. */
+.side-shots + .side-shots {
+  margin-top: 12px;
+}
+
+.side-shots.is-even img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.side-shots .is-wide {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 800px) {
+  .side-shots {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* VOIS: what changes and what stays, the storm of handover questions, the squad's time zones, and
@@ -2961,6 +3019,14 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
 
   .works-name {
     font-size: 14vw;
+  }
+
+  .works-list .is-minor {
+    margin-top: 0;
+  }
+
+  .works-list .is-minor .works-name {
+    font-size: 9vw;
   }
 
   .works-row.is-active .works-name {

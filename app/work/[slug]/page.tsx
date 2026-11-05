@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import KH from "@/components/KH";
 import OneSystem from "@/components/OneSystem";
 import ProjectFacts from "@/components/ProjectFacts";
+import SideQuests from "@/components/SideQuests";
 import VOIS from "@/components/VOIS";
 import { projects } from "@/lib/projects";
 
@@ -39,6 +40,8 @@ export default async function ProjectPage({ params }: PageProps<"/work/[slug]">)
           <KH facts={facts} />
         ) : project.slug === "vois" ? (
           <VOIS facts={facts} />
+        ) : project.slug === "side-quests" ? (
+          <SideQuests facts={facts} />
         ) : (
           <>
             <h1 className="display">{project.name}</h1>

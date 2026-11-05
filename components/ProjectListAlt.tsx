@@ -50,9 +50,16 @@ export default function ProjectListAlt() {
     let frame = 0;
     let last = performance.now();
 
+    const canvas = preview.querySelector("canvas")!;
+    const MARGIN = 16;
+    const INFO = 80; // room kept for the type, year and subtitle under the picture
+
+    // The picture is centred on the cursor, but never lower than lets it and its details fit on screen,
+    // so the last rows show it whole instead of cut off at the bottom.
     const onMove = (event: PointerEvent) => {
+      const half = canvas.offsetHeight / 2;
       target.x = event.clientX;
-      target.y = event.clientY;
+      target.y = Math.max(half + MARGIN, Math.min(event.clientY, window.innerHeight - MARGIN - INFO - half));
     };
     // Two chained followers give an ease-in-out: the picture starts gently, then settles gently.
     const tick = (now: number) => {
@@ -78,7 +85,7 @@ export default function ProjectListAlt() {
       <div className={`works${active ? " has-active" : ""}`}>
         <ul className="works-list">
           {projects.map((item) => (
-            <li key={item.slug}>
+            <li key={item.slug} className={item.minor ? "is-minor" : undefined}>
               <Link
                 href={`/work/${item.slug}`}
                 className={`works-row${active === item.slug ? " is-active" : ""}`}

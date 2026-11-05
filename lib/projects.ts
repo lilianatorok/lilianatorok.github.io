@@ -19,9 +19,25 @@ export type Project = {
   timeline?: string;
   team?: string;
   sections?: Section[];
+  // Not one of the work projects: listed smaller on the home page.
+  minor?: boolean;
 };
 
+// In this order on the home page: the latest work first, the side projects last.
 export const projects: Project[] = [
+  {
+    slug: "vois",
+    type: "Product design",
+    year: "2026–present",
+    name: "VOIS",
+    subtitle: "Telecommunications company",
+    // Her image of the logo on red light, cut to 3:2 (a new file name, so no cached placeholder shows).
+    cover: `${BASE}/vois/cover-red.webp`,
+    role: "Product designer",
+    timeline: "2026–present",
+    team: "One squad, four countries: the UK, India, Egypt and Hungary",
+    images: [],
+  },
   {
     slug: "kh",
     type: "Banking web & design system",
@@ -98,19 +114,6 @@ export const projects: Project[] = [
     images: [],
   },
   {
-    slug: "vois",
-    type: "Product design",
-    year: "2026–present",
-    name: "VOIS",
-    subtitle: "Telecommunications company",
-    // A plain placeholder until there are pictures to show.
-    cover: `${BASE}/vois/cover.webp`,
-    role: "Product designer",
-    timeline: "2026–present",
-    team: "One squad, four countries: the UK, India, Egypt and Hungary",
-    images: [],
-  },
-  {
     slug: "factor-mes",
     type: "Industrial dashboard",
     year: "2021–2023",
@@ -122,6 +125,20 @@ export const projects: Project[] = [
     team: "1 project owner, 2 project managers, 1 lead developer, 1 designer",
     timeline: "2021–2023",
     images: [],
+  },
+  {
+    slug: "side-quests",
+    type: "Personal projects",
+    year: "Always",
+    name: "Side Quests",
+    subtitle: "Things I make after hours",
+    // The war rooster, cut to 3:2 around him.
+    cover: `${BASE}/side/cover.webp`,
+    role: "Everything, mostly after dark",
+    timeline: "Always, and still going",
+    team: "Me, and sometimes a few friends",
+    images: [],
+    minor: true,
   },
 ];
 
