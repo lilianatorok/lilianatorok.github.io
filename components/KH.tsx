@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import KHPages from "@/components/KHPages";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -98,9 +99,9 @@ export default function KH({ facts }: { facts: ReactNode }) {
         <h2>Before the first component</h2>
         <div>
           <p>
-            The developers had documentation for the CMS. Designers had none. It took me months of research and
-            meetings just to understand how the site works, and to build a working relationship with the
-            developers along the way.
+            There was no documentation for the CMS, not even for the developers. It took months of research and
+            meetings with them just to understand how the site works, and that is how a working relationship
+            with the developers began.
           </p>
           <p>
             Until then, designers at K&amp;H worked on their own, mostly for the app. That worked there, but the
@@ -140,21 +141,29 @@ export default function KH({ facts }: { facts: ReactNode }) {
             the end both sides paid for it, design and development alike. We corrected what we could.
           </p>
           <figure className="kh-figure">
-            <figcaption>One card component, and the layouts it had to cover from desktop to mobile</figcaption>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className="kh-board"
-              src={`${BASE}/kh/card-layouts.webp`}
-              width={2400}
-              height={700}
-              alt="A card component with three cards laid out at six breakpoints"
-              loading="lazy"
-            />
+            <figcaption>The personal loan page, on desktop and mobile</figcaption>
+            <KHPages />
           </figure>
           <p>
             A system like this needs documentation, annotations and constant syncing, because the needs change
             from month to month.
           </p>
+          <p>
+            For the forms, I annotated every element for the developers: the matching component in their library,
+            a link to its latest documentation, and every spacing, so what they build matches Figma.
+          </p>
+          <figure className="kh-figure">
+            <figcaption>Form annotations: library links on the left, spacing on the right</figcaption>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className="kh-annotated"
+              src={`${BASE}/kh/forms-annotated.webp`}
+              width={1600}
+              height={676}
+              alt="A form with every input linked to its component documentation, and pink markers for each spacing"
+              loading="lazy"
+            />
+          </figure>
         </div>
       </section>
 

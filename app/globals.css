@@ -1132,7 +1132,101 @@ em {
   margin-top: 6px;
 }
 
-.kh-board {
+/* The loan page building itself: a desktop window, with a phone over its bottom right corner. */
+.kh-pages {
+  padding-bottom: 6%;
+  position: relative;
+}
+
+.kh-device {
+  background: #fff;
+  overflow: hidden;
+}
+
+.kh-device-d {
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgb(13 42 80 / 0.12);
+  width: 84%;
+}
+
+.kh-device-m {
+  border: 6px solid #141311;
+  border-radius: 26px;
+  bottom: 0;
+  box-shadow: 0 18px 40px rgb(13 42 80 / 0.22);
+  position: absolute;
+  right: 0;
+  width: 27%;
+}
+
+.kh-device-bar {
+  align-items: center;
+  background: #eef3f8;
+  display: flex;
+  gap: 6px;
+  padding: 9px 12px;
+}
+
+.kh-device-bar i {
+  background: #c9d4e0;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+
+.kh-device-bar span {
+  background: #fff;
+  border-radius: 999px;
+  color: #6a7c92;
+  font-size: 11px;
+  margin-left: 8px;
+  padding: 2px 12px;
+}
+
+.kh-device-screen {
+  background: #f4f9fd;
+  overflow: hidden;
+}
+
+.kh-device-d .kh-device-screen {
+  aspect-ratio: 1440 / 860;
+}
+
+.kh-device-m .kh-device-screen {
+  aspect-ratio: 375 / 760;
+}
+
+/* The page waits behind the loading picture until it has built up from tiles, then takes over. */
+.kh-device-screen {
+  position: relative;
+}
+
+.kh-device-page {
+  visibility: hidden;
+}
+
+.kh-device.is-loaded .kh-device-page {
+  visibility: visible;
+}
+
+.kh-device-page img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.kh-device-load {
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.kh-device.is-loaded .kh-device-load {
+  visibility: hidden;
+}
+
+.kh-annotated {
   border-radius: 8px;
   display: block;
   height: auto;
@@ -1173,11 +1267,15 @@ em {
   padding: 0;
 }
 
+/* A fixed height, so the bracket below can end exactly at the first and last stubs. */
 .kh-flow li {
+  align-items: center;
   border: 1px solid var(--line);
   border-radius: 8px;
+  display: flex;
+  height: 48px;
   margin: 0;
-  padding: 12px 16px;
+  padding: 0 16px;
   position: relative;
 }
 
@@ -1203,11 +1301,11 @@ em {
 
 .kh-flow ul::before {
   background: var(--line);
-  bottom: 22px;
+  bottom: 23.5px;
   content: "";
   left: -24px;
   position: absolute;
-  top: 22px;
+  top: 23.5px;
   width: 1px;
 }
 
@@ -2384,7 +2482,7 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
 /* The menu's sheet, the hover effects and the brand switch are left out on purpose: they are short
    and only run when someone asks for them. */
 @media (prefers-reduced-motion: reduce) {
-  *:not(.sheet, .menu-slide, .loop-name, .reveal-letter, .roll-letter, .os-stage *, .footer-inner, .beres-drip *, .factor-hall *, .factor-themed img, .factor-slide-move, .factor-switch-word > *, .factor-lightmode img, .kh-flow li),
+  *:not(.sheet, .menu-slide, .loop-name, .reveal-letter, .roll-letter, .os-stage *, .footer-inner, .beres-drip *, .factor-hall *, .factor-themed img, .factor-slide-move, .factor-switch-word > *, .factor-lightmode img, .kh-flow li, .kh-device-page),
   *::before,
   *:not(.kh-flow li)::after {
     animation: none !important;

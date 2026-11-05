@@ -28,9 +28,9 @@ export const projects: Project[] = [
     year: "2025–2026",
     name: "K&H",
     subtitle: "Financial services company",
-    cover: `${CDN}/yfILBw04ZGvgE2VWBmoQt2I0U.png`,
+    cover: `${BASE}/kh/cover.webp`,
     role: "Product designer",
-    team: "Hungarian team",
+    team: "Plenty of stakeholders, plenty of POs, not quite as many designers",
     timeline: "2025–2026",
     images: [
       { src: `${CDN}/RKQhL3I0VRozyZIoX57ECKNAg4s.png`, width: 1560, height: 1041, alt: "K&H project screens, part 1" },
