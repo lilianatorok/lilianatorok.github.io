@@ -489,6 +489,12 @@ em {
 /* The second version of the home list (see app/page.tsx): left-aligned names, played once, and the picture following the
    cursor with the project's details under it. */
 
+/* With version 2 on the home page, the loop is there for phones only (see the max-width: 800px block). */
+.home-alt .loop,
+.home-alt .preview {
+  display: none;
+}
+
 /* The names start right of the intro's column. Each row reacts from the start of its name to 80% of
    the screen width, so the picture follows the cursor a little past the name, but not everywhere. */
 .works {
@@ -2998,39 +3004,14 @@ h3:has([aria-expanded="true"]) + .faq-answer p {
     padding: 0 var(--gutter);
   }
 
-  /* The alternative list on phones: the same pictures with the name under, once, top to bottom. */
-  .works {
-    display: block;
-    padding: calc(var(--gutter) * 2 + 41px) var(--gutter) 160px;
-  }
-
+  /* Phones get the loop, even with version 2 on desktop. */
+  .works,
   .works-preview {
     display: none;
   }
 
-  .works-row {
-    color: var(--fg);
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-left: 0;
-    padding-bottom: 56px;
-    width: auto;
-  }
-
-  .works-name {
-    font-size: 14vw;
-  }
-
-  .works-list .is-minor {
-    margin-top: 0;
-  }
-
-  .works-list .is-minor .works-name {
-    font-size: 9vw;
-  }
-
-  .works-row.is-active .works-name {
-    transform: none;
+  .home-alt .loop {
+    display: block;
   }
 
   /* Phones: each project is its picture, built up from tiles, with just the name under it. */

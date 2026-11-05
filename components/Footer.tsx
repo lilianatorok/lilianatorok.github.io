@@ -15,8 +15,13 @@ export default function Footer() {
         </Link>
         <div className="footer-meta">
           <span className="status">Available for work</span>
-          <CopyEmail />
-          <a href={contact.phoneHref}>{contact.phone}</a>
+          {/* The same underlined, rolling links as on the contact page. */}
+          <CopyEmail asLink />
+          <a className="text-link" href={contact.phoneHref}>
+            <span className="text-link-label">
+              <RollText text={contact.phone} />
+            </span>
+          </a>
         </div>
       </div>
     </footer>

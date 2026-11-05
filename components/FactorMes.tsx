@@ -37,19 +37,23 @@ const mobileHeader = {
 
 const tasks = ["New screens", "Fixes from tests", "Smoother processes", "Light mode", "Tablet views"];
 
+// What I inherited, what I did about it, and what it taught me.
 const problems = [
   [
-    "Too few breakpoints.",
-    "The screens were designed for four widths only: 375 for mobile, 768 and 1024 for tablet, 1920 for desktop.",
+    "Plan the breakpoints first.",
+    "The screens I took over were designed for four widths only: 375, 768, 1024 and 1920. Filling in the gaps later taught me to set the breakpoints before the first screen.",
   ],
   [
-    "An unfinished atomic system.",
-    "Auto-layout was used the wrong way and components were missing states, and every screen was built from them.",
+    "A system is only as good as its smallest parts.",
+    "Auto-layout was used the wrong way and components were missing states, and every screen was built from them. Fixing them from the bottom up fixed the screens too.",
   ],
-  ["Too much air.", "Huge padding made data-heavy cards too big, and the header and sidebar took space from them."],
   [
-    "Small text that was hard to read.",
-    "The font was the problem, so I chose a rounder, more readable one, and raised the contrast with darker backgrounds and brighter text.",
+    "Data needs density.",
+    "Huge padding made data-heavy cards too big, and the header and sidebar took space from them. I tightened them, so the data got the room.",
+  ],
+  [
+    "Readability starts with the font.",
+    "Small text was hard to read, so I chose a rounder, more readable font, and raised the contrast with darker backgrounds and brighter text.",
   ],
 ];
 
@@ -238,10 +242,10 @@ export default function FactorMes({ facts }: { facts: ReactNode }) {
         <h2>Takeaways</h2>
         <div>
           <p>
-            I took the project over from another designer, and some design errors only came to light later, a few too
-            late to fix.
+            I took the project over from another designer, and some of the earlier design errors only came to light
+            later. Fixing them taught me the most.
           </p>
-          <h3 className="case-list-title">What went wrong</h3>
+          <h3 className="case-list-title">What I fixed, and learned</h3>
           <ul className="case-learnings">
             {problems.map(([lead, text]) => (
               <li key={lead}>

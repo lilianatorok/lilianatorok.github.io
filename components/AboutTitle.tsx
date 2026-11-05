@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import RevealText from "@/components/RevealText";
 
-const WORDS = ["Lili", "a product designer", "curious", "on your team"];
+const WORDS = ["Lili", "a product designer", "curious", "always learning"];
 const WORD_MS = 1500;
 
 export default function AboutTitle() {
@@ -16,7 +16,7 @@ export default function AboutTitle() {
 
   return (
     <h1 className="display about-title">
-      <span className="sr-only">I am Lili, a product designer, curious and on your team</span>
+      <span className="sr-only">I am Lili, a product designer, curious and always learning</span>
       <span aria-hidden="true">
         I am
         <span className="about-title-words">
