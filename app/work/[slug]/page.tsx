@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import KH from "@/components/KH";
 import OneSystem from "@/components/OneSystem";
 import ProjectFacts from "@/components/ProjectFacts";
+import VOIS from "@/components/VOIS";
 import { projects } from "@/lib/projects";
 
 export function generateStaticParams() {
@@ -36,6 +37,8 @@ export default async function ProjectPage({ params }: PageProps<"/work/[slug]">)
           <FactorMes facts={facts} />
         ) : project.slug === "kh" ? (
           <KH facts={facts} />
+        ) : project.slug === "vois" ? (
+          <VOIS facts={facts} />
         ) : (
           <>
             <h1 className="display">{project.name}</h1>

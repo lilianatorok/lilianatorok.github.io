@@ -34,8 +34,7 @@ export default function OneSystem({ facts }: { facts: ReactNode }) {
         <h2>The system</h2>
         <div>
           <p>
-            A small agency can’t build a new webshop for every client, so we didn’t. The CMS grew with each project,
-            the Figma system grew with it, and a new brand came down to a few choices: webshop or not, blog or news,
+            The CMS grew with each project, the Figma system grew with it, and a new brand came down to a few choices: webshop or not, blog or news,
             which filters, which component variant.
           </p>
           <div>

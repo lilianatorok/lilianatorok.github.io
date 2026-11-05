@@ -11,7 +11,7 @@ export default function TileCover({ cover }: { cover: string }) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const list = canvas?.closest(".loop");
+    const list = canvas?.closest(".loop, .works");
     if (!canvas || !list || !window.matchMedia(PHONE).matches) return;
     const image = coverImage(coverSrc(cover));
     let stop = () => {};

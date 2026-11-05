@@ -61,12 +61,16 @@ export default function IdeaPin() {
   return (
     <section className="os-pin" ref={pinRef}>
       <div className="os-pin-stage">
-        <h2>The idea</h2>
+        <h2>About the project</h2>
 
         <div className="os-pin-body">
           <p>
-            These four businesses look nothing alike, yet they all run on the same CMS. For each brand I changed
-            the UI and variables in Figma, made a few optimisations, and added new components only where needed.
+            A small agency can’t build a new webshop for every client, so with our developers we built one CMS for
+            all of them.
+          </p>
+          <p>
+            These four brands look nothing alike, yet they run on the same system. For each one I only changed the
+            UI and variables in Figma, and added components where needed.
           </p>
           <canvas
             ref={canvasRef}

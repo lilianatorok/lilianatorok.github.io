@@ -107,7 +107,7 @@ export const projects: Project[] = [
     cover: `${BASE}/vois/cover.webp`,
     role: "Product designer",
     timeline: "2026–present",
-    team: "International team",
+    team: "One squad, four countries: the UK, India, Egypt and Hungary",
     images: [],
   },
   {
