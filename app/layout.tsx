@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     "Product designer from Budapest, turning complex problems into simple, usable digital products.",
 };
 
-// Runs before paint so a saved dark theme never flashes light.
-const themeScript = `try{document.documentElement.dataset.theme=localStorage.getItem("theme")==="dark"?"dark":"light"}catch(e){document.documentElement.dataset.theme="light"}`;
+// Dark by default; runs before paint so a saved light theme never flashes dark.
+const themeScript = `try{document.documentElement.dataset.theme=localStorage.getItem("theme")==="light"?"light":"dark"}catch(e){document.documentElement.dataset.theme="dark"}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      data-theme="light"
+      data-theme="dark"
       className={`${anton.variable} ${interTight.variable}`}
       suppressHydrationWarning
     >

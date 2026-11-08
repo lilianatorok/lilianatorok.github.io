@@ -33,7 +33,7 @@ export default function Header({
   const theme = useSyncExternalStore(
     subscribe,
     () => document.documentElement.dataset.theme as Theme,
-    () => "light" as Theme,
+    () => "dark" as Theme,
   );
 
   return (

@@ -2275,6 +2275,23 @@ em {
   width: 100%;
 }
 
+/* The whole monitoring screen, above the loose elements, to calm their colours down. */
+.factor-dashboard {
+  margin-top: var(--lead-gap);
+}
+
+.factor-dashboard figcaption {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.factor-dashboard img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
 /* Dark, then light: each holds a moment, and the change is a slow crossfade. */
 .factor-lightmode {
   display: grid;

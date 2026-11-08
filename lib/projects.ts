@@ -106,8 +106,8 @@ export const projects: Project[] = [
     year: "2023–2024",
     name: "One System",
     subtitle: "Four+ brands, one CMS",
-    // One column per brand, built from its real pieces: hero, card and button on shared rows.
-    cover: `${BASE}/one-system/cover-layers.webp`,
+    // A soft glass ring on black, its colour drifting through four hues: one system, four brands.
+    cover: `${BASE}/one-system/cover-ring.webp`,
     role: "Product designer",
     team: "1 project owner, 2 backend developers, 1 frontend developer, 1 designer",
     timeline: "2023–2024",
