@@ -101,18 +101,6 @@ export default function FactorMes({ facts }: { facts: ReactNode }) {
             Every screen is full of numbers about how the machines are doing, and they have to be read in a moment. So
             the data speaks through graphs, bar charts and progress bars.
           </p>
-          {/* The whole screen first, so the elements below read as its parts. */}
-          <figure className="factor-dashboard">
-            <figcaption>The project list as a Gantt chart: every job, its status and its progress on one timeline</figcaption>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`${BASE}/factor-mes/gantt.webp`}
-              width={1600}
-              height={901}
-              alt="A dark Gantt chart: a list of projects and tasks with their number, status and percent done on the left, and coloured bars on a day-by-day timeline on the right"
-              loading="lazy"
-            />
-          </figure>
           <FactorElements />
 
           <article className="case-item">

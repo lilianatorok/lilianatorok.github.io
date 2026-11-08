@@ -11,12 +11,22 @@ const elements = [
   { image: screen("el-tile-kanban", 348, 346, "Kanban tile button"), x: 450, y: 0, w: 136 },
   { image: screen("el-tile-monitoring", 348, 346, "Monitoring tile button"), x: 600, y: 0, w: 136 },
   { image: screen("el-stops", 456, 266, "Stop reasons"), x: 770, y: 0, w: 230 },
-  { image: screen("el-forming-cycle", 1142, 1244, "Forming cycle card"), x: 0, y: 170, w: 440 },
-  { image: screen("el-chart", 1020, 772, "WF-13R bar chart card"), x: 470, y: 170, w: 530 },
-  { image: screen("el-oil", 1060, 760, "Oil level card"), x: 470, y: 601, w: 530 },
-  { image: screen("el-heating", 950, 756, "Heating cartridges card"), x: 0, y: 679, w: 440 },
+  // The whole Gantt screen between the tiles and the cards, to calm the colours down.
+  {
+    image: screen(
+      "gantt",
+      1600,
+      901,
+      "The project list as a Gantt chart: projects and tasks with their number, status and percent done, and coloured bars on a day-by-day timeline",
+    ),
+    x: 0,
+    y: 170,
+    w: 1000,
+  },
+  { image: screen("el-forming-cycle", 1142, 1244, "Forming cycle card"), x: 0, y: 769, w: 440 },
+  { image: screen("el-chart", 1020, 772, "WF-13R bar chart card"), x: 470, y: 769, w: 530 },
 ];
-const BOARD_HEIGHT = 1030;
+const BOARD_HEIGHT = 1249;
 
 export default function FactorElements() {
   return (
