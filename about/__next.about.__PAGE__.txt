@@ -1,0 +1,41 @@
+1:"$Sreact.fragment"
+2:"/_next/static/chunks/38ztxsmlwltj2.js"
+3:I[40253,["$2"],"default"]
+4:I[39756,["$2"],"default"]
+5:I[37457,["$2"],"default"]
+c:"/_next/static/chunks/1_-n-ntuga9ql.js"
+d:I[49236,["$2","$c"],"default"]
+e:I[94208,["$2","$c"],"default"]
+f:I[22016,["$2","$c"],""]
+10:I[1516,["$2","$c"],"default"]
+11:I[70187,["$2","$c"],"default"]
+12:I[89286,["$2","$c"],"default"]
+19:"ViewportBoundary"
+1a:I[97367,["$2"],"$19"]
+1b:"MetadataBoundary"
+1c:I[97367,["$2"],"$1b"]
+1d:"$Sreact.suspense"
+1e:I[27201,["$2"],"IconMark"]
+:HL["/_next/static/chunks/3p3mbapcriq8r.css","style"]
+7:X
+a:X
+a:C
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[[["$","main",null,{"className":"about","children":[["$","$Ld",null,{}],["$","div",null,{"className":"about-hero","children":[["$","$Le",null,{"className":"about-picture","src":"https://framerusercontent.com/images/IkhRzmjkiXgkgd5qEhTtHJU5XPs.png?scale-down-to=2048","alt":"Liliána standing in the street"}],["$","p",null,{"className":"about-quote","children":["Designing things is easy. Designing the right thing is ",["$","em",null,{"children":"the fun part"}]," — for me."]}]]}],["$","section",null,{"className":"about-block about-intro","children":[["$","h2",null,{"className":"about-block-title","children":"About me"}],["$","div",null,{"className":"about-intro-body","children":[["$","div",null,{"className":"about-text","children":[["$","p",null,{"children":"I work as a product designer, collaborating closely with developers and stakeholders to turn complex problems into simple, usable digital products — and yes, I actually enjoy the process."}],["$","p",null,{"children":"I’ve had the chance to work on genuinely good projects with great people — and that’s what keeps me excited about what I do. I’ve done many roles, and I bring that perspective into my design work. I’m easy to work with, ask a lot of questions, and care about the end result."}]]}],["$","$Lf",null,{"className":"text-link","href":"/Liliana_Torok_CV.pdf","download":true,"prefetch":false,"children":[["$","span",null,{"className":"text-link-label","children":["$","$L10",null,{"text":"Download CV"}]}],["$","svg",null,{"viewBox":"0 0 16 16","aria-hidden":"true","children":["$","path",null,{"d":"M8 1.5v9M4 6.5l4 4 4-4M2 14.5h12"}]}]]}]]}]]}],["$","section",null,{"className":"about-block services","children":[["$","h2",null,{"className":"about-block-title","children":"Services"}],["$","ul",null,{"children":[["$","li","Product design",{"children":"Product design"}],["$","li","UX & UI design",{"children":"UX & UI design"}],["$","li","Prototyping",{"children":"Prototyping"}],["$","li","Design systems",{"children":"Design systems"}],["$","li","Vibe coding",{"children":"Vibe coding"}],["$","li","Dev handoff",{"children":"Dev handoff"}]]}]]}],["$","$L11",null,{}],["$","$L12",null,{}]]}],["$","footer",null,{"className":"footer","children":["$","div",null,{"className":"footer-inner","children":[["$","p",null,{"className":"footer-lead","children":["Curious what we could build together? ","$L13"]}],"$L14","$L15"]}]}]],["$L16"],"$L17"]}],"p":"$@18","v":null,"s":"$7"}}]]
+8:[["children",{"s":"about","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","template":["$","$L5",null,{}]}]]}],"p":"$@9","v":"$a","s":"$7"},"c":"$Qb"}]]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3p3mbapcriq8r.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/38ztxsmlwltj2.js","async":true}]],["$","html",null,{"lang":"en","data-theme":"dark","className":"_7QXwG_variable _2pw9ea_variable","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem(\"theme\")===\"light\"?\"light\":\"dark\"}catch(e){document.documentElement.dataset.theme=\"dark\"}"}}]}],["$","body",null,{"children":["$","$L3",null,{"children":["$","$L4",null,{"parallelRouterKey":"children","template":["$","$L5",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]]}]}]}]]}]]}],"p":"$@6","v":null,"s":"$7"},"c":"$Q8"},"h":{"r":["$","$1","h",{"children":[null,["$","$L1a",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L1c",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$1d",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"About — Liliána Török"}],["$","meta","1",{"name":"description","content":"Product designer from Budapest, turning complex problems into simple, usable digital products."}],["$","link","2",{"rel":"icon","href":"/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","$L1e","3",{}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@1f","v":null,"s":"$7"}},"a":"$@20","u":"$@21","b":"zNFO5hUYQChrSdS2pcN4q"}
+22:I[52020,["$2","$c"],"default"]
+23:I[97367,["$2"],"OutletBoundary"]
+13:["$","em",null,{"children":"Let’s find out."}]
+14:["$","$Lf",null,{"href":"/contact","className":"footer-cta","children":["$","$L10",null,{"text":"Get in touch"}]}]
+15:["$","div",null,{"className":"footer-meta","children":[["$","span",null,{"className":"status","children":"Available for work"}],["$","$L22",null,{"asLink":true}],["$","a",null,{"className":"text-link","href":"tel:+36204410941","children":["$","span",null,{"className":"text-link-label","children":["$","$L10",null,{"text":"+36 (20) 441 0941"}]}]}]]}]
+16:["$","script","script-0",{"src":"/_next/static/chunks/1_-n-ntuga9ql.js","async":true}]
+17:["$","$L23",null,{"children":["$","$1d",null,{"name":"Next.MetadataOutlet","children":"$@24"}]}]
+7:300
+24:null
+21:true
+7:C
+20:0
+9:"$undefined"
+6:"$undefined"
+1f:"$undefined"
+18:"$undefined"
